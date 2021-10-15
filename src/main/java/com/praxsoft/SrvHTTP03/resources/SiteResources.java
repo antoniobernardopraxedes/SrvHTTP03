@@ -1,6 +1,6 @@
 package com.praxsoft.SrvHTTP03.resources;
 
-import com.praxsoft.SrvHTTP03.domain.Cliente;
+import com.praxsoft.SrvHTTP03.domain.ClienteDb;
 import com.praxsoft.SrvHTTP03.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ public class SiteResources {
     private ClienteService clienteService;
 
     @GetMapping(value = "/listar")
-    public ResponseEntity<List<Cliente>> Listar() {
+    public ResponseEntity<List<ClienteDb>> Listar() {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -31,47 +31,47 @@ public class SiteResources {
     @GetMapping(value = "/salvar1")
     public ResponseEntity<?> Salvar1() {
 
-        Cliente cliente = new Cliente();
-        cliente.setNomeUsuario("IsisDias");
-        cliente.setNome("Isis Dias Vieira");
-        cliente.setCelular("(61) 9 9622-2604");
-        cliente.setObs1("Observação 1");
-        cliente.setObs2("Observação 2");
-        cliente.setIdoso("sim");
-        cliente.setLocomocao("não");
-        cliente.setExigente("sim");
-        cliente.setGenero("feminino");
-        cliente.setAdminResp("Bernardo");
+        ClienteDb clienteDb = new ClienteDb();
+        clienteDb.setNomeUsuario("IsisDias");
+        clienteDb.setNome("Isis Dias Vieira");
+        clienteDb.setCelular("(61) 9 9622-2604");
+        clienteDb.setObs1("Observação 1");
+        clienteDb.setObs2("Observação 2");
+        clienteDb.setIdoso("sim");
+        clienteDb.setLocomocao("não");
+        clienteDb.setExigente("sim");
+        clienteDb.setGenero("feminino");
+        clienteDb.setAdminResp("Bernardo");
 
-        clienteService.salvar(cliente);
+        clienteService.salvar(clienteDb);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("application/json"))
-                .body(cliente);
+                .body(clienteDb);
     }
 
     @GetMapping(value = "/salvar2")
     public ResponseEntity<?> Salvar2() {
 
-        Cliente cliente = new Cliente();
-        cliente.setNomeUsuario("IrisVieira");
-        cliente.setNome("Iris Dias Vieira");
-        cliente.setCelular("(21) 9 9653-4328");
-        cliente.setObs1("Gosta de sevichi");
-        cliente.setObs2("Cozinha bem");
-        cliente.setIdoso("sim");
-        cliente.setLocomocao("não");
-        cliente.setExigente("não");
-        cliente.setGenero("masculino");
-        cliente.setAdminResp("Bernardo");
+        ClienteDb clienteDb = new ClienteDb();
+        clienteDb.setNomeUsuario("IrisVieira");
+        clienteDb.setNome("Iris Dias Vieira");
+        clienteDb.setCelular("(21) 9 9653-4328");
+        clienteDb.setObs1("Gosta de sevichi");
+        clienteDb.setObs2("Cozinha bem");
+        clienteDb.setIdoso("sim");
+        clienteDb.setLocomocao("não");
+        clienteDb.setExigente("não");
+        clienteDb.setGenero("masculino");
+        clienteDb.setAdminResp("Bernardo");
 
-        clienteService.salvar(cliente);
+        clienteService.salvar(clienteDb);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("application/json"))
-                .body(cliente);
+                .body(clienteDb);
     }
 
     @GetMapping(value = "/apagar/{id}")

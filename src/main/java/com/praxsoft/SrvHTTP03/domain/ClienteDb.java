@@ -3,7 +3,7 @@ package com.praxsoft.SrvHTTP03.domain;
 import javax.persistence.*;
 
 @Entity
-public class Cliente {
+public class ClienteDb {
 
     @Id
     @Column(name = "id", nullable = false)

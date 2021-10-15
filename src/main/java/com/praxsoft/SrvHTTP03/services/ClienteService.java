@@ -1,6 +1,6 @@
 package com.praxsoft.SrvHTTP03.services;
 
-import com.praxsoft.SrvHTTP03.domain.Cliente;
+import com.praxsoft.SrvHTTP03.domain.ClienteDb;
 import com.praxsoft.SrvHTTP03.repository.ClientesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,24 +13,24 @@ public class ClienteService {
     @Autowired
     private ClientesRepository clientesRepository;
 
-    public List<Cliente> listar() {
+    public List<ClienteDb> listar() {
         return clientesRepository.findAll();
     }
 
-    public Cliente buscar(Long id) {
-        Cliente cliente = clientesRepository.getById(id);
+    public ClienteDb buscar(Long id) {
+        ClienteDb clienteDb = clientesRepository.getById(id);
 
-        return cliente;
+        return clienteDb;
     }
 
-    public Cliente salvar(Cliente cliente) {
-        cliente.setId(null);
-        return clientesRepository.save(cliente);
+    public ClienteDb salvar(ClienteDb clienteDb) {
+        clienteDb.setId(null);
+        return clientesRepository.save(clienteDb);
     }
 
-    public void atualizar(Cliente cliente) {
-        if (verificarExistencia(cliente)) {
-            clientesRepository.save(cliente);
+    public void atualizar(ClienteDb clienteDb) {
+        if (verificarExistencia(clienteDb)) {
+            clientesRepository.save(clienteDb);
         }
     }
 
@@ -43,8 +43,8 @@ public class ClienteService {
         }
     }
 
-    private boolean verificarExistencia(Cliente cliente) {
-        if (buscar(cliente.getId()) == null) {
+    private boolean verificarExistencia(ClienteDb clienteDb) {
+        if (buscar(clienteDb.getId()) == null) {
             return false;
         }
         else {
