@@ -36,8 +36,6 @@ public class VlglService {
     //
     public boolean GeraCadastroCliente(Cliente cliente) {
 
-        cliente.MostraCamposTerminal();
-
         String dadosArqNovo = "{\n";
         dadosArqNovo = dadosArqNovo + "  NomeUsuario: " + cliente.getNomeUsuario() + "\n";
         dadosArqNovo = dadosArqNovo + "  Nome: " + cliente.getNome() + "\n";
@@ -89,8 +87,6 @@ public class VlglService {
     //******************************************************************************************************************
     //
     public boolean AtualizaCadastroCliente(Cliente cliente) {
-
-        cliente.MostraCamposTerminal();
 
         Cliente clienteArquivo = LeArquivoCadastroCliente(cliente.getNomeUsuario());
 

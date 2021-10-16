@@ -1,5 +1,6 @@
 package com.praxsoft.SrvHTTP03.services;
 
+import com.praxsoft.SrvHTTP03.domain.Cliente;
 import com.praxsoft.SrvHTTP03.domain.ClienteDb;
 import com.praxsoft.SrvHTTP03.repository.ClientesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,21 +18,37 @@ public class ClienteService {
         return clientesRepository.findAll();
     }
 
-    public ClienteDb buscar(Long id) {
-        ClienteDb clienteDb = clientesRepository.getById(id);
+    public List<ClienteDb> buscarNomeUsuario(String nomeUsuario) {
 
-        return clienteDb;
+        return clientesRepository.findByNomeUsuario(nomeUsuario);
+    }
+
+    public List<ClienteDb> buscarNome(String nome) {
+
+        return clientesRepository.findByNome(nome);
+    }
+
+    public ClienteDb salvarCliente(Cliente cliente) {
+
+        ClienteDb clienteDb = new ClienteDb();
+        clienteDb.setId(null);
+        clienteDb.setNomeUsuario(cliente.getNomeUsuario());
+        clienteDb.setNome(cliente.getNome());
+        clienteDb.setCelular(cliente.getCelular());
+        clienteDb.setObs1(cliente.getObs1());
+        clienteDb.setObs2(cliente.getObs2());
+        clienteDb.setIdoso(cliente.getIdoso());
+        clienteDb.setLocomocao(cliente.getLocomocao());
+        clienteDb.setExigente(cliente.getExigente());
+        clienteDb.setGenero(cliente.getGenero());
+        clienteDb.setAdminResp(cliente.getAdminResp());
+
+        return clientesRepository.save(clienteDb);
     }
 
     public ClienteDb salvar(ClienteDb clienteDb) {
         clienteDb.setId(null);
         return clientesRepository.save(clienteDb);
-    }
-
-    public void atualizar(ClienteDb clienteDb) {
-        if (verificarExistencia(clienteDb)) {
-            clientesRepository.save(clienteDb);
-        }
     }
 
     public void apagar(long id) {
@@ -40,15 +57,6 @@ public class ClienteService {
         }
         catch (Exception e) {
 
-        }
-    }
-
-    private boolean verificarExistencia(ClienteDb clienteDb) {
-        if (buscar(clienteDb.getId()) == null) {
-            return false;
-        }
-        else {
-            return true;
         }
     }
 

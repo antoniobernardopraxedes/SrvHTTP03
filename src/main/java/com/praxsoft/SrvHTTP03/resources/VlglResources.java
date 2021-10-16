@@ -3,6 +3,7 @@ package com.praxsoft.SrvHTTP03.resources;
 import com.praxsoft.SrvHTTP03.domain.Cliente;
 import com.praxsoft.SrvHTTP03.domain.ReservaMesa;
 import com.praxsoft.SrvHTTP03.services.Arquivo;
+import com.praxsoft.SrvHTTP03.services.ClienteService;
 import com.praxsoft.SrvHTTP03.services.VlglService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,9 @@ public class VlglResources {
 
     @Autowired
     private VlglService vlglService;
+
+    @Autowired
+    private ClienteService clienteService;
 
     @GetMapping(value = "/vlgl/admin")
     public ResponseEntity<?> EnviaDadosAdmin() {
@@ -158,6 +162,7 @@ public class VlglResources {
 
         Cliente cliente = vlglService.LeArquivoCadastroCliente(nomeUsuario);
         if (!cliente.getNomeUsuario().equals("null")) {
+
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .contentType(MediaType.valueOf("application/json"))
@@ -176,6 +181,9 @@ public class VlglResources {
         vlglService.Terminal("Cadastro de cliente: " + cliente.getNomeUsuario(), false);
 
         if (vlglService.GeraCadastroCliente(cliente)) {
+
+            clienteService.salvarCliente(cliente);
+
             return ResponseEntity
                     .status(HttpStatus.ACCEPTED)
                     .contentType(MediaType.valueOf("application/json"))
@@ -195,6 +203,9 @@ public class VlglResources {
         vlglService.Terminal("Atualização de cadastro de cliente: " + nomeUsuario, false);
 
         if (vlglService.AtualizaCadastroCliente(cliente)) {
+
+
+
             return ResponseEntity
                     .status(HttpStatus.ACCEPTED)
                     .contentType(MediaType.valueOf("application/json"))

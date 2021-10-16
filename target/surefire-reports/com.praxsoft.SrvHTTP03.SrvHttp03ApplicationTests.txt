@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.praxsoft.SrvHTTP03.SrvHttp03ApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.261 s - in com.praxsoft.SrvHTTP03.SrvHttp03ApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.412 s - in com.praxsoft.SrvHTTP03.SrvHttp03ApplicationTests

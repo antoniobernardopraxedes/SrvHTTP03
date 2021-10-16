@@ -59,50 +59,22 @@ public class SiteResources {
                 .body(clienteService.listar());
     }
 
-    @GetMapping(value = "/salvar1")
-    public ResponseEntity<?> Salvar1() {
-
-        ClienteDb clienteDb = new ClienteDb();
-        clienteDb.setNomeUsuario("IsisDias");
-        clienteDb.setNome("Isis Dias Vieira");
-        clienteDb.setCelular("(61) 9 9622-2604");
-        clienteDb.setObs1("Observação 1");
-        clienteDb.setObs2("Observação 2");
-        clienteDb.setIdoso("sim");
-        clienteDb.setLocomocao("não");
-        clienteDb.setExigente("sim");
-        clienteDb.setGenero("feminino");
-        clienteDb.setAdminResp("Bernardo");
-
-        clienteService.salvar(clienteDb);
+    @GetMapping(value = "/cliente/nomeusuario/{nomeUsuario}")
+    public ResponseEntity<?> VerificaClienteNomeUsuario(@PathVariable String nomeUsuario) {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("application/json"))
-                .body(clienteDb);
+                .body(clienteService.buscarNomeUsuario(nomeUsuario));
     }
 
-    @GetMapping(value = "/salvar2")
-    public ResponseEntity<?> Salvar2() {
-
-        ClienteDb clienteDb = new ClienteDb();
-        clienteDb.setNomeUsuario("IrisVieira");
-        clienteDb.setNome("Iris Dias Vieira");
-        clienteDb.setCelular("(21) 9 9653-4328");
-        clienteDb.setObs1("Gosta de sevichi");
-        clienteDb.setObs2("Cozinha bem");
-        clienteDb.setIdoso("sim");
-        clienteDb.setLocomocao("não");
-        clienteDb.setExigente("não");
-        clienteDb.setGenero("masculino");
-        clienteDb.setAdminResp("Bernardo");
-
-        clienteService.salvar(clienteDb);
+    @GetMapping(value = "/cliente/nome/{nome}")
+    public ResponseEntity<?> VerificaClienteNome(@PathVariable String nome) {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("application/json"))
-                .body(clienteDb);
+                .body(clienteService.buscarNome(nome));
     }
 
     @GetMapping(value = "/apagar/{id}")
