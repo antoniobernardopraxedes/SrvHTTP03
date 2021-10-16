@@ -1,1 +1,17 @@
+/home/antonio/Servidores/SrvHTTP03/src/main/java/com/praxsoft/SrvHTTP03/services/VlglService.java
+/home/antonio/Servidores/SrvHTTP03/src/main/java/com/praxsoft/SrvHTTP03/domain/Dados001.java
+/home/antonio/Servidores/SrvHTTP03/src/main/java/com/praxsoft/SrvHTTP03/domain/Artigo.java
+/home/antonio/Servidores/SrvHTTP03/src/main/java/com/praxsoft/SrvHTTP03/domain/ReservaMesa.java
+/home/antonio/Servidores/SrvHTTP03/src/main/java/com/praxsoft/SrvHTTP03/domain/ClienteDb.java
+/home/antonio/Servidores/SrvHTTP03/src/main/java/com/praxsoft/SrvHTTP03/services/ClienteService.java
+/home/antonio/Servidores/SrvHTTP03/src/main/java/com/praxsoft/SrvHTTP03/services/Arquivo.java
+/home/antonio/Servidores/SrvHTTP03/src/main/java/com/praxsoft/SrvHTTP03/config/SecurityConfig.java
 /home/antonio/Servidores/SrvHTTP03/src/main/java/com/praxsoft/SrvHTTP03/SrvHttp03Application.java
+/home/antonio/Servidores/SrvHTTP03/src/main/java/com/praxsoft/SrvHTTP03/domain/Cliente.java
+/home/antonio/Servidores/SrvHTTP03/src/main/java/com/praxsoft/SrvHTTP03/services/SiteService.java
+/home/antonio/Servidores/SrvHTTP03/src/main/java/com/praxsoft/SrvHTTP03/services/SupService.java
+/home/antonio/Servidores/SrvHTTP03/src/main/java/com/praxsoft/SrvHTTP03/services/Auxiliar.java
+/home/antonio/Servidores/SrvHTTP03/src/main/java/com/praxsoft/SrvHTTP03/repository/ClientesRepository.java
+/home/antonio/Servidores/SrvHTTP03/src/main/java/com/praxsoft/SrvHTTP03/resources/VlglResources.java
+/home/antonio/Servidores/SrvHTTP03/src/main/java/com/praxsoft/SrvHTTP03/resources/SupResources.java
+/home/antonio/Servidores/SrvHTTP03/src/main/java/com/praxsoft/SrvHTTP03/resources/SiteResources.java

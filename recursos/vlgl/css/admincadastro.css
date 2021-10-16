@@ -1,0 +1,186 @@
+body{
+  font-family: verdana;
+  margin-top: 20px;
+  background-color: rgb(247, 247, 247);
+}
+
+.linhaesq {
+  display: flex;  /* aligns all child elements (flex items) in a row */
+  max-width: 900px;
+}
+
+.linhadir {
+  display: flex;  /* aligns all child elements (flex items) in a row */
+  max-width: 500px;
+  margin: auto;
+}
+
+.colesq {
+  flex: 1;        /* distributes space on the line equally among items */
+  width: 770px;
+  margin-left: 50px;
+  margin-right: 10px;
+  align-content: center;
+  border:solid;
+  border-width: 1px;
+  border-color: gray;
+}
+
+.coldir {
+  flex: 1;        /* distributes space on the line equally among items */
+  width: 500px;
+  margin-left: 10px;
+  margin-right: 20px;
+  align-content: center;
+  border:solid;
+  border-width: 1px;
+  border-color: gray;
+}
+
+.titulo {
+  font-size: 23px;
+}
+
+.camponomeadmin {
+  font-size: 15px;
+  width: 450px;
+  margin-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+}
+
+.campoform {
+  font-size: 15px;
+  height: 20px;
+  width: 400px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 0px;
+  padding-left: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.campoformselect {
+  font-size: 15px;
+  height: 25px;
+  width: 400px;
+  margin-top: 10px;
+  margin-left: 15px;
+  margin-right: 0px;
+  padding-left: 15px;
+  padding-top: 11px;
+  padding-bottom: 10px;
+}
+
+.campocadastraatualiza {
+  width: 550px;
+  height: 20px;
+  margin-top: 7px;
+  padding-left: 10px;
+  font-size: 15px;
+  border-top: solid;
+  border-width: 1px;
+  border-color: gray;
+}
+
+.campoformselectinf {
+  font-size: 15px;
+  width: 500px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 0px;
+  padding-left: 15px;
+  padding-top: 10px;
+  padding-bottom: 1px;
+  border-top: solid;
+  border-width: 1px;
+  border-color: gray;
+}
+
+.select {
+  font-size: 15px;
+  height: 30px;
+  width: 95px;
+  margin-top: 7px;
+  margin-left: 10px;
+}
+
+.campoform2 {
+  font-size: 15px;
+  width: 140px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 0px;
+  padding-left: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.campoform3 {
+  font-size: 15px;
+  width: 140px;
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 0px;
+  padding-left: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.infoform {
+  font-size: 15px;
+  padding-left: 10px;
+}
+
+.botaoentraresq {
+  margin-top: 5px;
+  height: 30px;
+  width: 95px;
+  font-size: 15px;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+
+.botaoentrardir {
+  margin-top: 5px;
+  height: 30px;
+  width: 95px;
+  font-size: 15px;
+  margin-left: 5px;
+  margin-right: 10px;
+}
+
+.campotituloinfo {
+  width: 500px;
+  height: 25px;
+  font-size: 16px;
+  padding-left: 120px;
+  padding-top: 7px;
+  padding-bottom: 8px;
+  border-bottom: solid;
+  border-width: 1px;
+  border-color: gray;
+}
+
+.campoinfo {
+  width: 500px;
+  height: 25px;
+  font-size: 15px;
+  padding-left: 10px;
+  padding-top: 5px;
+}
+
+.campoinfocom {
+  width: 900px;
+  height: 20px;
+  margin-top: 15px;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 15px;
+  border-top: solid;
+  border-width: 1px;
+  border-color: gray;
+}
