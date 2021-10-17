@@ -45,7 +45,7 @@ public class VlglResources {
         vlglService.Terminal("Método GET - Recurso solicitado: /vlgl/reservas", false);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String nomeArquivo = "adminreservas.html";
+        String nomeArquivo = "adminreservasbd.html";
         String caminho = Arquivo.getDiretorioRecursos() + "/vlgl/";
 
         return vlglService.LeArquivoMontaResposta(caminho, nomeArquivo, userAgent);
@@ -150,7 +150,7 @@ public class VlglResources {
     @GetMapping(value = "/vlgl/cadastro")
     public ResponseEntity<?> CadastroVlgl(@RequestHeader(value = "User-Agent") String userAgent) {
 
-        String nomeArquivo = "admincadastro.html";
+        String nomeArquivo = "admincadastrobd.html";
         String caminho = Arquivo.getDiretorioRecursos() + "/vlgl/";
 
         return vlglService.LeArquivoMontaResposta(caminho, nomeArquivo, userAgent);

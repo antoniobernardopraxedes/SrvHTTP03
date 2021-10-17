@@ -20,12 +20,17 @@ public class ClienteService {
 
     public List<ClienteDb> buscarNomeUsuario(String nomeUsuario) {
 
-        return clientesRepository.findByNomeUsuario(nomeUsuario);
+        return clientesRepository.findByNomeUsuarioIgnoreCase(nomeUsuario);
     }
 
-    public List<ClienteDb> buscarNome(String nome) {
+    public List<ClienteDb> buscarNomeExato(String nome) {
 
-        return clientesRepository.findByNome(nome);
+        return clientesRepository.findByNomeIgnoreCase(nome);
+    }
+
+    public List<ClienteDb> buscarNomeParte(String nome) {
+
+        return clientesRepository.findByNomeContainingIgnoreCase(nome);
     }
 
     public ClienteDb salvarCliente(Cliente cliente) {

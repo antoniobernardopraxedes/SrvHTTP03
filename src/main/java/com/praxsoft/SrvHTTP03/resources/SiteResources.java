@@ -68,13 +68,22 @@ public class SiteResources {
                 .body(clienteService.buscarNomeUsuario(nomeUsuario));
     }
 
-    @GetMapping(value = "/cliente/nome/{nome}")
-    public ResponseEntity<?> VerificaClienteNome(@PathVariable String nome) {
+    @GetMapping(value = "/cliente/nomeexato/{nome}")
+    public ResponseEntity<?> VerificaClienteNomeExato(@PathVariable String nome) {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("application/json"))
-                .body(clienteService.buscarNome(nome));
+                .body(clienteService.buscarNomeExato(nome));
+    }
+
+    @GetMapping(value = "/cliente/nomeparte/{nome}")
+    public ResponseEntity<?> VerificaClienteNomeParte(@PathVariable String nome) {
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("application/json"))
+                .body(clienteService.buscarNomeParte(nome));
     }
 
     @GetMapping(value = "/apagar/{id}")

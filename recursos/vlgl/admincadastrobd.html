@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+  <html lang="pt-br">
+    <head>
+      <meta charset="UTF-8">
+      <title>Cadastro de Clientes</title>
+      <link rel="stylesheet" type="text/css" href="aux/admincadastrobd.css">
+      <script type="text/javascript" defer src="aux/admincadastrobd.js"></script>
+    </head>
+    <body>
+      <div class="linhaesq">
+        <div class="colesq">
+          <table>
+            <tr>
+              <td><img src="aux/logo.jpg" alt="Logo Vista Linda" width="40" height="40"></td>
+              <td em class="titulo"em>Cadastro de Clientes</td>
+            </tr>
+          </table>
+          <table>
+            <tr>
+              <td class="textocolesq" id="nomeadmin"></td>
+            </tr>
+          </table>
+          <table>
+            <form id="cadastrocliente" name="cadastro">
+              <tr>
+                <td class="textocolesq">Nome de usuário</td>
+                <td>
+                  <label for="username"></label>
+                  <input type="text" id="username" name="nomeusuario" value="" class = "campoform">
+                  <small></small>
+                </td>
+                <td class="campo5">
+                  <button type="button" onclick="VerificaCliente()" class="botao">Verifica</button>
+                </td>
+              </tr>
+              <td>
+              </td>
+              <tr>
+                <td class="textocolesq">Nome completo</td>
+                <td>
+                  <label for="nome"></label>
+                  <input type="text" id="nome" name="nomecliente" value="" class = "campoform">
+                  <small></small>
+                </td>
+                <td><input type="reset" value="Limpa" class="botao" id="limpa"></td>
+              </tr>
+              <tr>
+                <td class="textocolesq">Celular (WhatsApp)</td>
+                <td>
+                  <label for="celular"></label>
+                  <input type="text" id="celular" name="celularcliente" value="" class="campoform">
+                  <small></small>
+                </td>
+                <td class="campo5">
+                  <button type="button" onclick="ExcluiCadastroCliente()" class="botao">
+                    Exclui
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="textocolesq">Observação 1</td>
+                <td>
+                  <label for="obs1"></label>
+                  <input type="text" id="obs1" name="obs1cliente" value="" class="campoform">
+                  <small></small>
+                </td>
+              </tr>
+              <tr>
+                <td class="textocolesq">Observação 2</td>
+                <td>
+                  <label for="obs2"></label>
+                  <input type="text" id="obs2" name="obs2cliente" value="" class="campoform">
+                  <small></small>
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="textocolesq">O cliente é idoso(a)?</td>
+                <td>
+                  <select name="idoso" class="select">
+                    <option value="null"></option>
+                    <option value="Não">Não</option>
+                    <option value="Sim">Sim</option>
+                  </select>
+                </td>
+                <td>
+                </td>
+              </tr>
+              <tr>
+                <td class="textocolesq">Dificuldade de locomoção?</td>
+                <td>
+                  <select name="locomocao" class="select">
+                    <option value="null"></option>
+                    <option value="Não">Não</option>
+                    <option value="Sim">Sim</option>
+                  </select>
+                </td>
+                <td>
+                </td>
+              </tr>
+              <tr>
+                <td class="textocolesq">O cliente é exigente?</td>
+                <td>
+                  <select name="exigente" class="select">
+                    <option value="null"></option>
+                    <option value="Não">Não</option>
+                    <option value="Sim">Sim</option>
+                  </select>
+                </td>
+                <td>
+                </td>
+              </tr>
+              <tr>
+                <td class="textocolesq">Gênero do cliente?</td>
+                <td>
+                  <select name="genero" class="select">
+                    <option value="null"></option>
+                    <option value="Feminino">Feminino</option>
+                    <option value="Masculino">Masculino</option>
+                  </select>
+                </td>
+                <td>
+                </td>
+              </tr>
+            </form>
+              <tr>
+                <td class="textocolesq">Responsável pelo cadastro:</td>
+                <td class="textocolesq" id="infoadminrec"></td>
+                <td>
+                  <button type="button" onclick="CadastraAtualiza()" class="botao" id="botaocadastra">
+                    Cadastra
+                  </button>
+                </td>
+              </tr>
+          </table>
+          <table>
+            <tr>
+              <td class="campoinfocom" id="infocom"></td>
+            </tr>
+          </table>
+        </div>
+        <div class="linhadir">
+          <div class="coldir">
+            <p class="campotituloinfo">Coluna Direita</p>
+          </div>
+        </div>
+    </body>
+    </html>
