@@ -232,6 +232,8 @@ public class VlglService {
                 sufixo = letra + IntToStr2(i);
 
                 reservaMesas[i] = new ReservaMesa();
+                reservaMesas[i].setMesaSelecionada(Arquivo.LeParametro(dadosArquivo, "MES" + sufixo + ":"));
+                reservaMesas[i].setDataReserva(Arquivo.LeParametro(dadosArquivo, "DAT" + sufixo + ":"));
                 reservaMesas[i].setNomeUsuario(Arquivo.LeParametro(dadosArquivo, "NOU" + sufixo + ":"));
                 reservaMesas[i].setNomeCliente(Arquivo.LeCampo(dadosArquivo, "NOC" + sufixo + ":"));
                 reservaMesas[i].setNumPessoas(Arquivo.LeParametro(dadosArquivo, "NUP" + sufixo + ":"));
@@ -239,6 +241,7 @@ public class VlglService {
                 reservaMesas[i].setAdminResp(Arquivo.LeParametro(dadosArquivo, "ADR" + sufixo + ":"));
                 reservaMesas[i].setHoraRegistro(Arquivo.LeParametro(dadosArquivo, "HOR" + sufixo + ":"));
                 reservaMesas[i].setDataRegistro(Arquivo.LeParametro(dadosArquivo, "DTR" + sufixo + ":"));
+                reservaMesas[i].setMesaHabilitada(Arquivo.LeParametro(dadosArquivo, "HAB" + sufixo + ":"));
             }
         }
         else {
@@ -292,6 +295,8 @@ public class VlglService {
         for (int i = 0; i < numMesas; i++) {
             if (i > 8) { letra = "B"; }
             sufixo = letra + IntToStr2(i);
+            dadosArqNovo = dadosArqNovo + "  MES" + sufixo + ": " + reservaMesas[i].getMesaSelecionada() + "\n";
+            dadosArqNovo = dadosArqNovo + "  DAT" + sufixo + ": " + reservaMesas[i].getDataReserva() + "\n";
             dadosArqNovo = dadosArqNovo + "  NOU" + sufixo + ": " + reservaMesas[i].getNomeUsuario() + "\n";
             dadosArqNovo = dadosArqNovo + "  NOC" + sufixo + ": " + reservaMesas[i].getNomeCliente() + "\n";
             dadosArqNovo = dadosArqNovo + "  NUP" + sufixo + ": " + reservaMesas[i].getNumPessoas() + "\n";
@@ -299,6 +304,7 @@ public class VlglService {
             dadosArqNovo = dadosArqNovo + "  ADR" + sufixo + ": " + reservaMesas[i].getAdminResp() + "\n";
             dadosArqNovo = dadosArqNovo + "  HOR" + sufixo + ": " + reservaMesas[i].getHoraRegistro() + "\n";
             dadosArqNovo = dadosArqNovo + "  DTR" + sufixo + ": " + reservaMesas[i].getDataRegistro() + "\n";
+            dadosArqNovo = dadosArqNovo + "  HAB" + sufixo + ": " + reservaMesas[i].getMesaHabilitada() + "\n";
         }
         dadosArqNovo = dadosArqNovo + "}";
 
@@ -363,19 +369,22 @@ public class VlglService {
         String nomeArquivo = dataRes + ".res";
 
         int numMesas = 17;
-        String Indice;
+        String sufixo;
         String letra = "A";
         String dadosArqNovo = "{\n";
         for (int i = 0; i < numMesas; i++) {
             if (i > 8) { letra = "B"; }
-            Indice = Auxiliar.IntToStr2(i);
-            dadosArqNovo = dadosArqNovo + "  NOU" + letra + Indice + ": null\n";
-            dadosArqNovo = dadosArqNovo + "  NOC" + letra + Indice + ": null\n";
-            dadosArqNovo = dadosArqNovo + "  NUP" + letra + Indice + ": null\n";
-            dadosArqNovo = dadosArqNovo + "  HOC" + letra + Indice + ": null\n";
-            dadosArqNovo = dadosArqNovo + "  ADR" + letra + Indice + ": null\n";
-            dadosArqNovo = dadosArqNovo + "  HOR" + letra + Indice + ": null\n";
-            dadosArqNovo = dadosArqNovo + "  DTR" + letra + Indice + ": null\n";
+            sufixo = letra + IntToStr2(i);
+            dadosArqNovo = dadosArqNovo + "  MES" + sufixo + ": " + sufixo + "\n";
+            dadosArqNovo = dadosArqNovo + "  DAT" + sufixo + ": " + dataRes + "\n";
+            dadosArqNovo = dadosArqNovo + "  NOU" + sufixo + ": null\n";
+            dadosArqNovo = dadosArqNovo + "  NOC" + sufixo + ": null\n";
+            dadosArqNovo = dadosArqNovo + "  NUP" + sufixo + ": null\n";
+            dadosArqNovo = dadosArqNovo + "  HOC" + sufixo + ": null\n";
+            dadosArqNovo = dadosArqNovo + "  ADR" + sufixo + ": null\n";
+            dadosArqNovo = dadosArqNovo + "  HOR" + sufixo + ": null\n";
+            dadosArqNovo = dadosArqNovo + "  DTR" + sufixo + ": null\n";
+            dadosArqNovo = dadosArqNovo + "  HAB" + sufixo + ": null\n";
         }
         dadosArqNovo = dadosArqNovo + "}";
 
@@ -700,8 +709,6 @@ public class VlglService {
                         .body(msgArqNaoEncontrado(nomeArquivo));
             }
             else {
-                Terminal("Arquivo enviado: " + caminho + nomeArquivo, false);
-
                 return ResponseEntity
                         .status(HttpStatus.OK)
                         .contentType(MediaType.valueOf(tipo))

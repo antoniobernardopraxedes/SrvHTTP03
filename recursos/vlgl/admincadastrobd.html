@@ -30,7 +30,7 @@
                   <small></small>
                 </td>
                 <td class="campo5">
-                  <button type="button" onclick="VerificaCliente()" class="botao">Verifica</button>
+                  <button type="button" onclick="VerificaNomeUsuario()" class="botao">Verifica</button>
                 </td>
               </tr>
               <td>
@@ -42,7 +42,9 @@
                   <input type="text" id="nome" name="nomecliente" value="" class = "campoform">
                   <small></small>
                 </td>
-                <td><input type="reset" value="Limpa" class="botao" id="limpa"></td>
+                <td class="campo5">
+                  <button type="button" onclick="VerificaNome()" class="botao">Verifica</button>
+                </td>
               </tr>
               <tr>
                 <td class="textocolesq">Celular (WhatsApp)</td>
@@ -51,10 +53,8 @@
                   <input type="text" id="celular" name="celularcliente" value="" class="campoform">
                   <small></small>
                 </td>
-                <td class="campo5">
-                  <button type="button" onclick="ExcluiCadastroCliente()" class="botao">
-                    Exclui
-                  </button>
+                <td>
+                  <input type="reset" value="Limpa" class="botao" id="limpa">
                 </td>
               </tr>
               <tr>
@@ -64,7 +64,11 @@
                   <input type="text" id="obs1" name="obs1cliente" value="" class="campoform">
                   <small></small>
                 </td>
+                <td>
+                  <button type="button" onclick="ExcluiCadastroCliente()" class="botao">Exclui</button>
+                </td>
               </tr>
+
               <tr>
                 <td class="textocolesq">Observação 2</td>
                 <td>
@@ -78,7 +82,7 @@
                 <td class="textocolesq">O cliente é idoso(a)?</td>
                 <td>
                   <select name="idoso" class="select">
-                    <option value="null"></option>
+                    <option value=""></option>
                     <option value="Não">Não</option>
                     <option value="Sim">Sim</option>
                   </select>
@@ -90,7 +94,7 @@
                 <td class="textocolesq">Dificuldade de locomoção?</td>
                 <td>
                   <select name="locomocao" class="select">
-                    <option value="null"></option>
+                    <option value=""></option>
                     <option value="Não">Não</option>
                     <option value="Sim">Sim</option>
                   </select>
@@ -102,7 +106,7 @@
                 <td class="textocolesq">O cliente é exigente?</td>
                 <td>
                   <select name="exigente" class="select">
-                    <option value="null"></option>
+                    <option value=""></option>
                     <option value="Não">Não</option>
                     <option value="Sim">Sim</option>
                   </select>
@@ -114,7 +118,7 @@
                 <td class="textocolesq">Gênero do cliente?</td>
                 <td>
                   <select name="genero" class="select">
-                    <option value="null"></option>
+                    <option value=""></option>
                     <option value="Feminino">Feminino</option>
                     <option value="Masculino">Masculino</option>
                   </select>
@@ -141,7 +145,7 @@
         </div>
         <div class="linhadir">
           <div class="coldir">
-            <p class="campotituloinfo">Coluna Direita</p>
+            <p class="campotituloinfo">Pesquisa</p>
           </div>
         </div>
     </body>

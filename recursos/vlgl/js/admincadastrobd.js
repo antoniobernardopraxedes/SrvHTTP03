@@ -19,31 +19,32 @@ const locomocaoCliente = form.elements['locomocao'];
 const exigenteCliente = form.elements['exigente'];
 const generoCliente = form.elements['genero'];
 
-var NomeUsuarioAdmin = "null";
+var NomeUsuarioAdmin = "";
 
 // Objeto que recebe as informações do cliente locais (lidas do formulário e do ambiente local)
-const Cliente = { nomeUsuario: "null",
-                  nome: "null",
-                  celular: "null",
-                  obs1: "null",
-                  obs2: "null",
-                  idoso: "null",
-                  locomocao: "null",
-                  exigente: "null",
-                  genero: "null",
-                  adminResp: "null" };
+const Cliente = { nomeUsuario: "",
+                  nome: "",
+                  celular: "",
+                  obs1: "",
+                  obs2: "",
+                  idoso: "",
+                  locomocao: "",
+                  exigente: "",
+                  genero: "",
+                  adminResp: "" };
 
 // Objeto que recebe as informações do cliente enviadas pelo servidor
-const ClienteRec = { nomeUsuario: "null",
-                     nome: "null",
-                     celular: "null",
-                     obs1: "null",
-                     obs2: "null",
-                     idoso: "null",
-                     locomocao: "null",
-                     exigente: "null",
-                     genero: "null",
-                     adminResp: "null" };
+const ClienteRec = { id: 0,
+                     nomeUsuario: "",
+                     nome: "",
+                     celular: "",
+                     obs1: "",
+                     obs2: "",
+                     idoso: "",
+                     locomocao: "",
+                     exigente: "",
+                     genero: "",
+                     adminResp: "" };
 
 var ClienteOK = false;
 var Atualiza = false;
@@ -58,8 +59,8 @@ VerificaAdmin()
 //                                                                                                                    *
 // Data: 10/10/2021                                                                                                   *
 //                                                                                                                    *
-// Função: é chamada cada vez que o programa inicia ou que o botão limpa é pressionado. A funão envia uma mensagem    *
-//         para o servidor solicitando as informações do Administrador que fez login.                                 *
+// Função: é chamada cada vez que o programa inicia. A funão envia uma mensagem para o servidor solicitando           *
+//         as informações do Administrador que fez login.                                                             *
 //                                                                                                                    *
 // Entrada: não tem                                                                                                   *
 //                                                                                                                    *
@@ -88,7 +89,7 @@ function VerificaAdmin() {
 }
 
 //*********************************************************************************************************************
-// Nome da função: VerificaCliente                                                                                    *
+// Nome da função: VerificaNomeUsuario                                                                                *
 //                                                                                                                    *
 // Data: 10/10/2021                                                                                                   *
 //                                                                                                                    *
@@ -101,7 +102,7 @@ function VerificaAdmin() {
 // Saída: não tem                                                                                                     *
 //*********************************************************************************************************************
 //
-function VerificaCliente() {
+function VerificaNomeUsuario() {
 
     clienteOK = false;
 
@@ -139,6 +140,84 @@ function VerificaCliente() {
              console.log("Erro: " + e);
          };
     }
+
+}
+
+//*********************************************************************************************************************
+// Nome da função: CarregaDadosCliente                                                                                *
+//                                                                                                                    *
+// Data: 13/10/2021                                                                                                   *
+//                                                                                                                    *
+// Função: faz o parsing do arquivo XML recebido do servidor, lê as informações do cliente e carrega nas variáveis    *
+//                                                                                                                    *
+// Entrada: mensagem Json recebida do servidor                                                                        *
+//                                                                                                                    *
+// Saída: não tem                                                                                                     *
+//*********************************************************************************************************************
+//
+function CarregaDadosCliente(respostaJson) {
+    let statusHTTP = respostaJson.status;
+    ClienteRec.id = 0;
+    if ((statusHTTP >= 200) && (statusHTTP <= 299)) {
+        try {
+            let dadosJson = JSON.parse(respostaJson.responseText);
+            ClienteRec.id = dadosJson.id;
+            ClienteRec.nomeUsuario = dadosJson.nomeUsuario;
+            ClienteRec.nome = dadosJson.nome;
+            ClienteRec.celular = dadosJson.celular;
+            ClienteRec.obs1 = dadosJson.obs1;
+            ClienteRec.obs2 = dadosJson.obs2;
+            ClienteRec.idoso = dadosJson.idoso;
+            ClienteRec.locomocao = dadosJson.locomocao;
+            ClienteRec.exigente = dadosJson.exigente;
+            ClienteRec.genero = dadosJson.genero;
+            ClienteRec.adminResp = dadosJson.adminResp;
+
+            if (ClienteRec.id > 0) {
+                clienteOK = true;
+            }
+            else {
+                clienteOK = false;
+            }
+        } catch (e) {
+            CarregaClienteVazio();
+        }
+    }
+    else {
+        CarregaClienteVazio();
+    }
+}
+
+function CarregaClienteVazio() {
+    ClienteRec.id = 0;
+    ClienteRec.nomeUsuario = "";
+    ClienteRec.nome = "";
+    ClienteRec.celular = "";
+    ClienteRec.obs1 = "";
+    ClienteRec.obs2 = "";
+    ClienteRec.idoso = "";
+    ClienteRec.locomocao = "";
+    ClienteRec.exigente = "";
+    ClienteRec.genero = "";
+    ClienteRec.adminResp = "";
+}
+
+//*********************************************************************************************************************
+// Nome da função: VerificaNome                                                                                       *
+//                                                                                                                    *
+// Data: 10/10/2021                                                                                                   *
+//                                                                                                                    *
+// Função: é chamada cada vez que o usuário Admin pressiona o botão Verifica ao lado do campo Nome do cliente no      *
+//         no formulário. A função envia para o servidor o nome do cliente. Pode ser um dos nomes, e o servidor       *
+//         apresenta na tela de pesquisa os resultados de clientes.                                                   *
+//                                                                                                                    *
+// Entrada: não tem                                                                                                   *
+//                                                                                                                    *
+// Saída: não tem                                                                                                     *
+//*********************************************************************************************************************
+//
+function VerificaNome() {
+
 
 }
 
@@ -200,25 +279,17 @@ function AtualizaCadastroCliente() {
 
     if (confirm("Confirma a atualização do cadastro do cliente " + Cliente.nomeUsuario + "?")) {
 
-        if (nomeCliente.value == "") { Cliente.nome = "null"; }
-        else { Cliente.nome = nomeCliente.value; }
-
-        if (celularCliente.value == "") { Cliente.celular = "null"; }
-        else { Cliente.celular = celularCliente.value; }
-
-        if (obs1Cliente.value == "") { Cliente.obs1 = "null"; }
-        else { Cliente.obs1 = obs1Cliente.value; }
-
-        if (obs2Cliente.value == "") { Cliente.obs2 = "null"; }
-        else { Cliente.obs2 = obs2Cliente.value; }
-
-        Cliente.idoso = idosoCliente.value;
-        Cliente.locomocao = locomocaoCliente.value;
-        Cliente.exigente = exigenteCliente.value;
-        Cliente.genero = generoCliente.value;
+        Cliente.nome = nomeCliente.value;
+        Cliente.celular = celularCliente.value;
+        Cliente.obs1 = obs1Cliente.value;
+        Cliente.obs2 = obs2Cliente.value;
+        Cliente.idoso = idosoCliente.value
+        Cliente.locomocao = locomocaoCliente.value
+        Cliente.exigente = exigenteCliente.value
+        Cliente.genero = generoCliente.value
 
         let requisicao = new XMLHttpRequest();
-        let recurso = "cadastro/cliente";
+        let recurso = "cadastro/cliente/" + ClienteRec.id;
         requisicao.open("PUT", recurso, true);
         requisicao.setRequestHeader("Content-Type", "application/json;charset=utf-8");
         requisicao.timeout = 2000;
@@ -264,13 +335,8 @@ function CadastraCliente() {
 
         Cliente.nome = nomeCliente.value;
         Cliente.celular = celularCliente.value;
-
-        if (obs1Cliente.value == "") { Cliente.obs1 = "null"; }
-        else { Cliente.obs1 = obs1Cliente.value; }
-
-        if (obs2Cliente.value == "") { Cliente.obs2 = "null"; }
-        else { Cliente.obs2 = obs2Cliente.value; }
-
+        Cliente.obs1 = obs1Cliente.value;
+        Cliente.obs2 = obs2Cliente.value;
         Cliente.idoso = idosoCliente.value;
         Cliente.locomocao = locomocaoCliente.value;
         Cliente.exigente = exigenteCliente.value;
@@ -355,40 +421,6 @@ function ExcluiCadastroCliente() {
 }
 
 //*********************************************************************************************************************
-// Nome da função: CarregaDadosCliente                                                                                *
-//                                                                                                                    *
-// Data: 13/10/2021                                                                                                   *
-//                                                                                                                    *
-// Função: faz o parsing do arquivo XML recebido do servidor, lê as informações do cliente e carrega nas variáveis    *
-//                                                                                                                    *
-// Entrada: mensagem Json recebida do servidor                                                                        *
-//                                                                                                                    *
-// Saída: não tem                                                                                                     *
-//*********************************************************************************************************************
-//
-function CarregaDadosCliente(respostaJson) {
-
-    let dadosJson = JSON.parse(respostaJson.responseText);
-    ClienteRec.nomeUsuario = dadosJson.nomeUsuario;
-    ClienteRec.nome = dadosJson.nome;
-    ClienteRec.celular = dadosJson.celular;
-    ClienteRec.obs1 = dadosJson.obs1;
-    ClienteRec.obs2 = dadosJson.obs2;
-    ClienteRec.idoso = dadosJson.idoso;
-    ClienteRec.locomocao = dadosJson.locomocao;
-    ClienteRec.exigente = dadosJson.exigente;
-    ClienteRec.genero = dadosJson.genero;
-    ClienteRec.adminResp = dadosJson.adminResp;
-
-    if (ClienteRec.nomeUsuario == Cliente.nomeUsuario) {
-      clienteOK = true;
-    }
-    else {
-      clienteOK = false;
-    }
-}
-
-//*********************************************************************************************************************
 // Nome da função: EscreveInfoCliente                                                                                 *
 //                                                                                                                    *
 // Data: 13/10/2021                                                                                                   *
@@ -447,9 +479,9 @@ function LimpaCamposForm() {
   document.cadastro.celularcliente.value = "";
   document.cadastro.obs1cliente.value = "";
   document.cadastro.obs2cliente.value = "";
-  document.cadastro.idoso.value = "null";
-  document.cadastro.locomocao.value = "null";
-  document.cadastro.exigente.value = "null";
-  document.cadastro.genero.value = "null";
+  document.cadastro.idoso.value = "";
+  document.cadastro.locomocao.value = "";
+  document.cadastro.exigente.value = "";
+  document.cadastro.genero.value = "";
   EscreveTexto("                                        ", "infoadminrec");
 }

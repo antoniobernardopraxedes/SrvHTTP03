@@ -1,6 +1,7 @@
 package com.praxsoft.SrvHTTP03.resources;
 
 import com.praxsoft.SrvHTTP03.domain.Cliente;
+import com.praxsoft.SrvHTTP03.domain.ClienteDb;
 import com.praxsoft.SrvHTTP03.domain.ReservaMesa;
 import com.praxsoft.SrvHTTP03.services.Arquivo;
 import com.praxsoft.SrvHTTP03.services.ClienteService;
@@ -56,12 +57,12 @@ public class VlglResources {
         vlglService.Terminal("Solicitação de reservas na data: " + dataReserva, false);
 
         ReservaMesa[] reservaMesas = vlglService.LeArquivoReservaMesa(dataReserva);
-        List<ReservaMesa[]> MsgJson = new ArrayList<ReservaMesa[]>(Collections.singleton(reservaMesas));
+        //List<ReservaMesa[]> MsgJson = new ArrayList<ReservaMesa[]>(Collections.singleton(reservaMesas));
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("application/json"))
-                .body(MsgJson);
+                .body(reservaMesas);
     }
 
     @PostMapping(value = "/vlgl/reserva")
@@ -160,19 +161,23 @@ public class VlglResources {
     public ResponseEntity<?> VerificaCliente(@PathVariable String nomeUsuario) {
         vlglService.Terminal("Verificação de cliente: " + nomeUsuario, false);
 
-        Cliente cliente = vlglService.LeArquivoCadastroCliente(nomeUsuario);
-        if (!cliente.getNomeUsuario().equals("null")) {
+        //Cliente cliente = vlglService.LeArquivoCadastroCliente(nomeUsuario);
+        //if (!cliente.getNomeUsuario().equals("null")) {
 
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .contentType(MediaType.valueOf("application/json"))
-                    .body(cliente);
-        }
-        else {
+        ClienteDb clienteDb = clienteService.buscarNomeUsuario(nomeUsuario);
+        if (clienteDb == null) {
+            vlglService.Terminal("Cliente não cadastrado.", false);
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .contentType(MediaType.valueOf("application/json"))
-                    .body(cliente);
+                    .body(clienteDb);
+        }
+        else {
+            vlglService.Terminal("Enviados os dados do cliente: " + nomeUsuario, false);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .contentType(MediaType.valueOf("application/json"))
+                    .body(clienteDb);
         }
     }
 
@@ -180,42 +185,44 @@ public class VlglResources {
     public ResponseEntity<?> CadastraCliente(@RequestBody Cliente cliente) {
         vlglService.Terminal("Cadastro de cliente: " + cliente.getNomeUsuario(), false);
 
-        if (vlglService.GeraCadastroCliente(cliente)) {
+        //if (vlglService.GeraCadastroCliente(cliente)) {
 
-            clienteService.salvarCliente(cliente);
-
+        if (clienteService.salvarCadastroCliente(cliente) == null) {
+            vlglService.Terminal("Falha ao cadastrar o cliente.", false);
+            return ResponseEntity
+                    .status(HttpStatus.NOT_MODIFIED )
+                    .contentType(MediaType.valueOf("application/json"))
+                    .body(vlglService.GeraCadastroClienteVazio());
+        }
+        else {
+            vlglService.Terminal("Cliente " + cliente.getNomeUsuario() + " cadastrado.", false);
             return ResponseEntity
                     .status(HttpStatus.ACCEPTED)
                     .contentType(MediaType.valueOf("application/json"))
                     .body(cliente);
         }
-        else {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_MODIFIED )
-                    .contentType(MediaType.valueOf("application/json"))
-                    .body(vlglService.GeraCadastroClienteVazio());
-        }
     }
 
-    @PutMapping(value = "/vlgl/cadastro/cliente")
-    public ResponseEntity<?> AtualizaCadastroCliente(@RequestBody Cliente cliente) {
+    @PutMapping(value = "/vlgl/cadastro/cliente/{id}")
+    public ResponseEntity<?> AtualizaCadastroCliente(@PathVariable long id, @RequestBody Cliente cliente) {
         String nomeUsuario = cliente.getNomeUsuario();
         vlglService.Terminal("Atualização de cadastro de cliente: " + nomeUsuario, false);
 
-        if (vlglService.AtualizaCadastroCliente(cliente)) {
+        //if (vlglService.AtualizaCadastroCliente(cliente)) {
 
-
-
+        ClienteDb clienteDb = clienteService.atualizarCadastroCliente(cliente, id);
+        if (clienteDb == null) {
+            vlglService.Terminal("Falha ao atualizar o cadastro do cliente.", false);
+            return ResponseEntity
+                    .status(HttpStatus.NOT_MODIFIED)
+                    .contentType(MediaType.valueOf("application/json"))
+                    .body(vlglService.GeraCadastroClienteVazio());
+        } else {
+            vlglService.Terminal("Cadastro do Cliente atualizado.", false);
             return ResponseEntity
                     .status(HttpStatus.ACCEPTED)
                     .contentType(MediaType.valueOf("application/json"))
-                    .body(vlglService.LeArquivoCadastroCliente(nomeUsuario));
-        }
-        else {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_MODIFIED )
-                    .contentType(MediaType.valueOf("application/json"))
-                    .body(vlglService.GeraCadastroClienteVazio());
+                    .body(clienteDb);
         }
     }
 
@@ -246,6 +253,4 @@ public class VlglResources {
 
         return vlglService.LeArquivoMontaResposta(caminho, nomeArquivo, userAgent);
     }
-
-
 }

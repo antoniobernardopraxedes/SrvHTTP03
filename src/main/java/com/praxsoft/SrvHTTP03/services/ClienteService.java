@@ -18,7 +18,7 @@ public class ClienteService {
         return clientesRepository.findAll();
     }
 
-    public List<ClienteDb> buscarNomeUsuario(String nomeUsuario) {
+    public ClienteDb buscarNomeUsuario(String nomeUsuario) {
 
         return clientesRepository.findByNomeUsuarioIgnoreCase(nomeUsuario);
     }
@@ -33,10 +33,28 @@ public class ClienteService {
         return clientesRepository.findByNomeContainingIgnoreCase(nome);
     }
 
-    public ClienteDb salvarCliente(Cliente cliente) {
+    public ClienteDb salvarCadastroCliente(Cliente cliente) {
 
         ClienteDb clienteDb = new ClienteDb();
         clienteDb.setId(null);
+        clienteDb.setNomeUsuario(cliente.getNomeUsuario());
+        clienteDb.setNome(cliente.getNome());
+        clienteDb.setCelular(cliente.getCelular());
+        clienteDb.setObs1(cliente.getObs1());
+        clienteDb.setObs2(cliente.getObs2());
+        clienteDb.setIdoso(cliente.getIdoso());
+        clienteDb.setLocomocao(cliente.getLocomocao());
+        clienteDb.setExigente(cliente.getExigente());
+        clienteDb.setGenero(cliente.getGenero());
+        clienteDb.setAdminResp(cliente.getAdminResp());
+
+        return clientesRepository.save(clienteDb);
+    }
+
+    public ClienteDb atualizarCadastroCliente(Cliente cliente, long id) {
+
+        ClienteDb clienteDb = new ClienteDb();
+        clienteDb.setId(id);
         clienteDb.setNomeUsuario(cliente.getNomeUsuario());
         clienteDb.setNome(cliente.getNome());
         clienteDb.setCelular(cliente.getCelular());

@@ -19,23 +19,23 @@ var NomeUsuarioAdmin;
 var CapacidadeMesa;
 var IdMesaConsulta;
 var dataOK = false;
-var clienteOK = false;
 var numPessoasOK = false;
 var horaChegadaOK = false;
 var consultaMesa = false;
 var HabilitaExclusao = false;
 
 // Objeto que recebe do servidor as informações do cliente
-const Cliente = { nomeUsuario: "null",
-                  nome: "null",
-                  celular: "null",
-                  obs1: "null",
-                  obs2: "null",
-                  idoso: "null",
-                  locomocao: "null",
-                  exigente: "null",
-                  gerero: "null",
-                  adminResp: "null" };
+const Cliente = { id: 0,
+                  nomeUsuario: "",
+                  nome: "",
+                  celular: "",
+                  obs1: "",
+                  obs2: "",
+                  idoso: "",
+                  locomocao: "",
+                  exigente: "",
+                  gerero: "",
+                  adminResp: "" };
 
 // Objeto que recebe do servidor as informações da reserva
 const ReservaRec = { mesaSelecionada: "null",
@@ -49,12 +49,12 @@ const ReservaRec = { mesaSelecionada: "null",
                      dataRegistro: "null" };
 
 // Objeto que contém as informações necessárias para solicitação de reserva de mesa
-const SolicitaReservaMesa = { nomeUsuario: "null",
-                              nomeCliente: "null",
+const SolicitaReservaMesa = { mesaSelecionada: "null",
                               dataReserva: "null",
+                              nomeUsuario: "null",
+                              nomeCliente: "null",
                               numPessoas: "null",
                               horaChegada: "null",
-                              mesaSelecionada: "null",
                               adminResp: "null" };
 
 VerificaAdmin()
@@ -150,22 +150,24 @@ function VerificaMesasData() {
 
             requisicao.onload = function() {
                 let dadosJson = JSON.parse(requisicao.responseText);
+                console.log("dadosJason.length = " + dadosJson.length);
                 let numMesas = 17;
                 let letra = "A";
                 let idMesa = "";
                 for (let j = 0; j < numMesas; j++) {
                     if (j > 8) letra = "B";
-                    idMesa = letra + IntToStr2(j);
-                    let nomeUsuario = dadosJson[0][j].nomeUsuario;
-                    let numPessoas = dadosJson[0][j].numPessoas;
-                    let horaChegada = dadosJson[0][j].horaChegada;
-                    AtualizaMesa(idMesa, numPessoas, nomeUsuario, horaChegada);
+                    //idMesa = letra + IntToStr2(j);
+                    let mesaSelecionada = dadosJson[j].mesaSelecionada;
+                    let nomeUsuario = dadosJson[j].nomeUsuario;
+                    let numPessoas = dadosJson[j].numPessoas;
+                    let horaChegada = dadosJson[j].horaChegada;
+                    AtualizaMesa(mesaSelecionada, numPessoas, nomeUsuario, horaChegada);
                }
 
                dataOK = true;
                EscreveTexto("Servidor: mapa de reservas do dia " + DataReserva, "info1");
                EscreveTexto(DataReserva, "dataMapa");
-               if (clienteOK) {
+               if (Cliente.id > 0) {
                     document.getElementById("botaoresconf").style.backgroundColor = "#0705a4";
                     document.getElementById("botaoresconf").style.color = "white";
                }
@@ -280,42 +282,23 @@ function ConverteFormatoData(dataR) {
 //
 function VerificaCliente() {
 
-    NomeUsuarioCliente = userName.value;
-    clienteOK = false;
     consultaMesa = false;
 
-    if (NomeUsuarioCliente == "") {
+    if (userName.value == "") {
         EscreveTexto("Entre com o nome de usuário do cliente", "info1");
     }
     else {
         let requisicao = new XMLHttpRequest();
-        let recurso = "cadastro/cliente/" + NomeUsuarioCliente;
+        let recurso = "cadastro/cliente/" + userName.value;
         requisicao.open("GET", recurso, true);
         requisicao.timeout = 2000;
         EscreveMsgEnvSrv();
         requisicao.send(null);
 
         requisicao.onload = function() {
-            let dadosJson = JSON.parse(requisicao.responseText);
-            Cliente.nomeUsuario = dadosJson.nomeUsuario;
-            Cliente.nome = dadosJson.nome;
-            Cliente.celular = dadosJson.celular;
-            Cliente.obs1 = dadosJson.obs1;
-            Cliente.obs2 = dadosJson.obs2;
-            Cliente.idoso = dadosJson.idoso;
-            Cliente.locomocao = dadosJson.locomocao;
-            Cliente.exigente = dadosJson.exigente;
-            Cliente.gerero = dadosJson.genero;
-            Cliente.adminResp = dadosJson.adminResp;
+            CarregaDadosCliente(requisicao);
 
-            if (Cliente.nomeUsuario == "null") {
-                LimpaCamposInfo();
-                EscreveTexto("Servidor: cliente não cadastrado", "info1");
-                document.getElementById("botaoresconf").style.backgroundColor = "#e7e5e5";
-                document.getElementById("botaoresconf").style.color = "black";
-                clienteOK = false;
-            }
-            else {
+            if (Cliente.id > 0) {
                 EscreveTexto("Servidor: informações do cliente", "info1");
                 EscreveTexto("Nome de usuário: " + Cliente.nomeUsuario, "info2");
                 EscreveTexto("Nome completo: " + Cliente.nome, "info3");
@@ -329,11 +312,17 @@ function VerificaCliente() {
                 EscreveTexto("Exigente: " + Cliente.exigente, "info7");
                 EscreveTexto("Obs 1: " + Cliente.obs1, "info8");
                 EscreveTexto("Obs 2: " + Cliente.obs2, "info9");
+
                 if (dataOK) {
                     document.getElementById("botaoresconf").style.backgroundColor = "#0705a4";
                     document.getElementById("botaoresconf").style.color = "white";
-                }
-                clienteOK = true;
+                  }
+            }
+            else {
+                LimpaCamposInfo();
+                EscreveTexto("Servidor: cliente não cadastrado", "info1");
+                document.getElementById("botaoresconf").style.backgroundColor = "#e7e5e5";
+                document.getElementById("botaoresconf").style.color = "black";
             }
          };
 
@@ -342,6 +331,59 @@ function VerificaCliente() {
              console.log("Erro: " + e);
          };
     }
+}
+
+//*********************************************************************************************************************
+// Nome da função: CarregaDadosCliente                                                                                *
+//                                                                                                                    *
+// Data: 13/10/2021                                                                                                   *
+//                                                                                                                    *
+// Função: faz o parsing do arquivo XML recebido do servidor, lê as informações do cliente e carrega nas variáveis    *
+//                                                                                                                    *
+// Entrada: mensagem Json recebida do servidor                                                                        *
+//                                                                                                                    *
+// Saída: não tem                                                                                                     *
+//*********************************************************************************************************************
+//
+function CarregaDadosCliente(respostaJson) {
+    let statusHTTP = respostaJson.status;
+    Cliente.id = 0;
+
+    if ((statusHTTP >= 200) && (statusHTTP <= 299)) {
+        try {
+            let dadosJson = JSON.parse(respostaJson.responseText);
+            Cliente.id = dadosJson.id;
+            Cliente.nomeUsuario = dadosJson.nomeUsuario;
+            Cliente.nome = dadosJson.nome;
+            Cliente.celular = dadosJson.celular;
+            Cliente.obs1 = dadosJson.obs1;
+            Cliente.obs2 = dadosJson.obs2;
+            Cliente.idoso = dadosJson.idoso;
+            Cliente.locomocao = dadosJson.locomocao;
+            Cliente.exigente = dadosJson.exigente;
+            Cliente.genero = dadosJson.genero;
+            Cliente.adminResp = dadosJson.adminResp;
+        } catch (e) {
+            CarregaClienteVazio()
+        }
+  }
+  else {
+      CarregaClienteVazio()
+  }
+}
+
+function CarregaClienteVazio() {
+    Cliente.id = 0;
+    Cliente.nomeUsuario = "";
+    Cliente.nome = "";
+    Cliente.celular = "";
+    Cliente.obs1 = "";
+    Cliente.obs2 = "";
+    Cliente.idoso = "";
+    Cliente.locomocao = "";
+    Cliente.exigente = "";
+    Cliente.genero = "";
+    Cliente.adminResp = "";
 }
 
 //*********************************************************************************************************************
@@ -373,10 +415,9 @@ function PreparaReserva() {
         else {
             if (userName.value == "") {
                 EscreveTexto("Entre com o nome de usuário do cliente", "info1");
-                ClienteOK = false;
             }
             else {
-                if (!clienteOK) {
+                if (Cliente.id == 0) {
                     EscreveTexto("Verifique o cliente", "info1");
                 }
                 else {
@@ -398,7 +439,7 @@ function PreparaReserva() {
                                     EscreveTexto("Hora de chegada inválida (use hh:mm)", "info1");
                                 }
                                 else {// Se as informações estão OK, carrega no objeto SolicitaReservaMesa
-                                    SolicitaReservaMesa.nomeUsuario = userName.value;
+                                    SolicitaReservaMesa.nomeUsuario = Cliente.nomeUsuario;
                                     SolicitaReservaMesa.nomeCliente = Cliente.nome;
                                     SolicitaReservaMesa.dataReserva = ConverteFormatoData(dataReserva.value);
                                     SolicitaReservaMesa.numPessoas = numPessoas.value;
@@ -523,7 +564,6 @@ function ConfirmaReserva(mesaSelecionada) {
         MostraDadosReserva(requisicao);
         EscreveTexto("Servidor: confirmação da reserva ", "info1");
         dataOK = false;
-        clienteOK = false;
     };
 
     requisicao.ontimeout = function(e) {
