@@ -89,12 +89,14 @@ public class SiteResources {
     @GetMapping(value = "/apagar/{id}")
     public ResponseEntity<?> Apagar(@PathVariable long id) {
 
-        clienteService.apagar(id);
+        clienteService.apagarCadastro(id);
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("application/json"))
-                .body("{ \"CadastroApagado\" : \"" + id + "\"}");
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .contentType(MediaType.valueOf("application/json"))
+                    .body("{ \"CadastroApagado\" : \"" + id + "\"}");
+
+
     }
 
 }

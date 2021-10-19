@@ -38,24 +38,32 @@ const Cliente = { id: 0,
                   adminResp: "" };
 
 // Objeto que recebe do servidor as informações da reserva
-const ReservaRec = { mesaSelecionada: "null",
-                     dataReserva: "null",
-                     nomeUsuario: "null",
-                     nomeCliente: "null",
-                     numPessoas: "null",
-                     horaChegada: "null",
-                     adminResp: "null",
-                     horaRegistro: "null",
-                     dataRegistro: "null" };
+const ReservaRec = { id: "",
+                     mesaSelecionada: "",
+                     dataReserva: "",
+                     nomeUsuario: "",
+                     nomeCliente: "",
+                     numPessoas: "",
+                     horaChegada: "",
+                     adminResp: "",
+                     horaRegistro: "",
+                     dataRegistro: "" };
 
 // Objeto que contém as informações necessárias para solicitação de reserva de mesa
-const SolicitaReservaMesa = { mesaSelecionada: "null",
-                              dataReserva: "null",
-                              nomeUsuario: "null",
-                              nomeCliente: "null",
-                              numPessoas: "null",
-                              horaChegada: "null",
-                              adminResp: "null" };
+const SolicitaReservaMesa = { id: 0,
+                              mesaSelecionada: "",
+                              dataReserva: "",
+                              nomeUsuario: "",
+                              nomeCliente: "",
+                              numPessoas: "",
+                              horaChegada: "",
+                              adminResp: "" };
+
+const InfoMesa[17] = { id: 0,
+                       mesaSelecionada: "",
+                       numPessoas: "",
+                       nomeUsuario: "",
+                       horaChegada: "" };
 
 VerificaAdmin()
 
@@ -150,19 +158,25 @@ function VerificaMesasData() {
 
             requisicao.onload = function() {
                 let dadosJson = JSON.parse(requisicao.responseText);
-                console.log("dadosJason.length = " + dadosJson.length);
                 let numMesas = 17;
                 let letra = "A";
                 let idMesa = "";
+                let numReservas = dadosJson.length;
+                console.log("dadosJason.length = " + numReservas);
+
                 for (let j = 0; j < numMesas; j++) {
                     if (j > 8) letra = "B";
-                    //idMesa = letra + IntToStr2(j);
-                    let mesaSelecionada = dadosJson[j].mesaSelecionada;
-                    let nomeUsuario = dadosJson[j].nomeUsuario;
-                    let numPessoas = dadosJson[j].numPessoas;
-                    let horaChegada = dadosJson[j].horaChegada;
-                    AtualizaMesa(mesaSelecionada, numPessoas, nomeUsuario, horaChegada);
-               }
+                    idMesa = letra + IntToStr2(j);
+                    AtualizaMesa(idMesa, "null", "null", "null");
+                }
+
+                for (let j = 0; j < numReservas; j++) {
+                   let mesaSelecionada = dadosJson[j].mesaSelecionada;
+                   let nomeUsuario = dadosJson[j].nomeUsuario;
+                   let numPessoas = dadosJson[j].numPessoas;
+                   let horaChegada = dadosJson[j].horaChegada;
+                   AtualizaMesa(mesaSelecionada, numPessoas, nomeUsuario, horaChegada);
+                }
 
                dataOK = true;
                EscreveTexto("Servidor: mapa de reservas do dia " + DataReserva, "info1");

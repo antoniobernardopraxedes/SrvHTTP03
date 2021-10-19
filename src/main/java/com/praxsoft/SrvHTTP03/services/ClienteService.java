@@ -15,6 +15,7 @@ public class ClienteService {
     private ClientesRepository clientesRepository;
 
     public List<ClienteDb> listar() {
+
         return clientesRepository.findAll();
     }
 
@@ -33,7 +34,7 @@ public class ClienteService {
         return clientesRepository.findByNomeContainingIgnoreCase(nome);
     }
 
-    public ClienteDb salvarCadastroCliente(Cliente cliente) {
+    public ClienteDb salvarCadastro(Cliente cliente) {
 
         ClienteDb clienteDb = new ClienteDb();
         clienteDb.setId(null);
@@ -51,7 +52,7 @@ public class ClienteService {
         return clientesRepository.save(clienteDb);
     }
 
-    public ClienteDb atualizarCadastroCliente(Cliente cliente, long id) {
+    public ClienteDb atualizarCadastro(Cliente cliente, long id) {
 
         ClienteDb clienteDb = new ClienteDb();
         clienteDb.setId(id);
@@ -69,17 +70,13 @@ public class ClienteService {
         return clientesRepository.save(clienteDb);
     }
 
-    public ClienteDb salvar(ClienteDb clienteDb) {
-        clienteDb.setId(null);
-        return clientesRepository.save(clienteDb);
-    }
-
-    public void apagar(long id) {
+    public boolean apagarCadastro(long id) {
         try {
             clientesRepository.deleteById(id);
+            return true;
         }
         catch (Exception e) {
-
+            return false;
         }
     }
 

@@ -2,7 +2,15 @@ package com.praxsoft.SrvHTTP03.domain;
 
 import com.praxsoft.SrvHTTP03.services.Auxiliar;
 
-public class ReservaMesa {
+import javax.persistence.*;
+
+@Entity
+public class ReservaDb {
+
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String mesaSelecionada;
     private String dataReserva;
@@ -13,6 +21,9 @@ public class ReservaMesa {
     private String adminResp;
     private String horaRegistro;
     private String dataRegistro;
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getMesaSelecionada() {
         return mesaSelecionada;
@@ -50,6 +61,7 @@ public class ReservaMesa {
     public void setDataRegistro(String dataRegistro) { this.dataRegistro = dataRegistro; }
 
     public void MostraCamposTerminal() {
+        Auxiliar.Terminal("Identificador: " + id, false);
         Auxiliar.Terminal("Mesa selecionada: " + mesaSelecionada, false);
         Auxiliar.Terminal("Data da reserva: " + dataReserva, false);
         Auxiliar.Terminal("Nome de usuário: " + nomeUsuario, false);

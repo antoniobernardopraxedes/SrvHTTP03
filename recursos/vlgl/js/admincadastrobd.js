@@ -104,8 +104,6 @@ function VerificaAdmin() {
 //
 function VerificaNomeUsuario() {
 
-    clienteOK = false;
-
     if (nomeUsuarioCliente.value == "") {
         EscreveTexto("Entre com o nome de usuário do cliente", "info1");
     }
@@ -121,7 +119,7 @@ function VerificaNomeUsuario() {
         requisicao.onload = function() {
             CarregaDadosCliente(requisicao);
 
-            if (clienteOK) {
+            if (ClienteRec.id > 0) {
                 EscreveTexto("Servidor: recebidas informações do cliente", "infocom");
                 EscreveInfoCliente();
                 Atualiza = true;
@@ -158,7 +156,10 @@ function VerificaNomeUsuario() {
 function CarregaDadosCliente(respostaJson) {
     let statusHTTP = respostaJson.status;
     ClienteRec.id = 0;
+    EstadoResposta = false;
+
     if ((statusHTTP >= 200) && (statusHTTP <= 299)) {
+        EstadoResposta = true;
         try {
             let dadosJson = JSON.parse(respostaJson.responseText);
             ClienteRec.id = dadosJson.id;
@@ -172,13 +173,6 @@ function CarregaDadosCliente(respostaJson) {
             ClienteRec.exigente = dadosJson.exigente;
             ClienteRec.genero = dadosJson.genero;
             ClienteRec.adminResp = dadosJson.adminResp;
-
-            if (ClienteRec.id > 0) {
-                clienteOK = true;
-            }
-            else {
-                clienteOK = false;
-            }
         } catch (e) {
             CarregaClienteVazio();
         }
@@ -186,6 +180,7 @@ function CarregaDadosCliente(respostaJson) {
     else {
         CarregaClienteVazio();
     }
+    return EstadoResposta;
 }
 
 function CarregaClienteVazio() {
@@ -297,15 +292,18 @@ function AtualizaCadastroCliente() {
         requisicao.send(JSON.stringify(Cliente));
 
         requisicao.onload = function() {
-            CarregaDadosCliente(requisicao);
-
-            if (clienteOK) {
-                EscreveTexto("Servidor: o cadastro do cliente foi atualizado", "infocom");
-                EscreveInfoCliente();
+            if (CarregaDadosCliente(requisicao)) {
+                if (ClienteRec.id > 0) {
+                    EscreveTexto("Servidor: o cadastro do cliente foi atualizado", "infocom");
+                    EscreveInfoCliente();
+                }
+                else {
+                    LimpaCamposForm();
+                    EscreveTexto("Servidor: falha ao atualizar o cadastro do cliente (2)", "infocom");
+                }
             }
             else {
-                LimpaCamposInfo();
-                EscreveTexto("Servidor: falha ao atualizar o cadastro do cliente", "infocom");
+                EscreveTexto("Servidor: falha ao atualizar o cadastro do cliente (1)", "infocom");
             }
         };
 
@@ -351,17 +349,21 @@ function CadastraCliente() {
         requisicao.send(JSON.stringify(Cliente));
 
         requisicao.onload = function() {
-            CarregaDadosCliente(requisicao);
-            if (clienteOK) {
-                EscreveTexto("Servidor: o cliente foi cadastrado", "infocom");
-                EscreveInfoCliente();
-                Atualiza = true;
+            if (CarregaDadosCliente(requisicao)) {
+                if (ClienteRec.id > 0) {
+                    EscreveTexto("Servidor: o cliente foi cadastrado", "infocom");
+                    EscreveInfoCliente();
+                    Atualiza = true;
+                }
+                else {
+                    LimpaCamposForm();
+                    EscreveTexto("Servidor: falha ao cadastrar o cliente (2)", "infocom");
+                    Atualiza = false;
+                }
             }
             else {
-                LimpaCamposInfo();
-                EscreveTexto("Servidor: falha ao cadastrar o cliente", "infocom");
-                Atualiza = false;
-              }
+                EscreveTexto("Servidor: falha ao cadastrar o cliente (1)", "infocom");
+            }
         };
 
         requisicao.ontimeout = function(e) {
@@ -391,25 +393,28 @@ function ExcluiCadastroCliente() {
         EscreveTexto("Entre com o nome de usuário do cliente e verifique", "infocom");
     }
     else {
-        if (clienteOK) {
-            Cliente.nomeUsuario = nomeUsuarioCliente.value;
+        if (ClienteRec.id > 0) {
 
-            if (confirm("Confirma a exclusão do cadastro do cliente " + Cliente.nomeUsuario + "?")) {
+            if (confirm("Confirma a exclusão do cadastro do cliente " + ClienteRec.nomeUsuario + "?")) {
                 let requisicao = new XMLHttpRequest();
-                let recurso = "cadastro/cliente/" + Cliente.nomeUsuario;
+                let recurso = "cadastro/cliente/" + ClienteRec.id;
                 requisicao.open("DELETE", recurso, true);
                 requisicao.timeout = 2000;
                 EscreveMsgEnvSrv();
                 requisicao.send(null);
 
                 requisicao.onload = function() {
-                    CarregaDadosCliente(requisicao);
-                    if (!clienteOK) {
-                        EscreveTexto("Servidor: confirmada a exclusão do cadastro", "infocom");
-                        EscreveInfoCliente();
+                    if (CarregaDadosCliente(requisicao)) {
+                        if (ClienteRec.id == 0) {
+                            EscreveTexto("Servidor: confirmada a exclusão do cadastro", "infocom");
+                            LimpaCamposForm();
+                        }
+                        else {
+                            EscreveTexto("Servidor: Falha ao excluir o cliente (2)", "infocom");
+                        }
                     }
                     else {
-                        EscreveTexto("Servidor: Falha ao excluir o cliente", "infocom");
+                        EscreveTexto("Servidor: Falha ao excluir o cliente (1)", "infocom");
                     }
                 };
             }
@@ -434,7 +439,7 @@ function ExcluiCadastroCliente() {
 //
 function EscreveInfoCliente() {
 
-    if (clienteOK) {
+    if (ClienteRec.id > 0) {
         document.cadastro.nomecliente.value = ClienteRec.nome;
         document.cadastro.celularcliente.value = ClienteRec.celular;
         document.cadastro.obs1cliente.value = ClienteRec.obs1;
@@ -447,7 +452,7 @@ function EscreveInfoCliente() {
         EscreveTexto("Atualiza", "botaocadastra");
     }
     else {
-        EscreveTexto("Cliente não cadastrado", "info1");
+        EscreveTexto("Servidor: cliente não cadastrado", "infocom");
         EscreveTexto("Cadastra", "botaocadastra");
     }
 }
@@ -461,7 +466,7 @@ function EscreveMsgEnvSrv() {
 }
 
 function EscreveMsgErrSrv() {
-    document.getElementById("info1").innerHTML = "O Servidor não respondeu";
+    document.getElementById("infocom").innerHTML = "O Servidor não respondeu";
 }
 
 function EscreveRspMsgSrv(msgrsp) {
@@ -483,5 +488,5 @@ function LimpaCamposForm() {
   document.cadastro.locomocao.value = "";
   document.cadastro.exigente.value = "";
   document.cadastro.genero.value = "";
-  EscreveTexto("                                        ", "infoadminrec");
+  EscreveTexto("", "infoadminrec");
 }

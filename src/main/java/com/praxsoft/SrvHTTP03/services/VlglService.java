@@ -241,7 +241,6 @@ public class VlglService {
                 reservaMesas[i].setAdminResp(Arquivo.LeParametro(dadosArquivo, "ADR" + sufixo + ":"));
                 reservaMesas[i].setHoraRegistro(Arquivo.LeParametro(dadosArquivo, "HOR" + sufixo + ":"));
                 reservaMesas[i].setDataRegistro(Arquivo.LeParametro(dadosArquivo, "DTR" + sufixo + ":"));
-                reservaMesas[i].setMesaHabilitada(Arquivo.LeParametro(dadosArquivo, "HAB" + sufixo + ":"));
             }
         }
         else {
@@ -304,7 +303,6 @@ public class VlglService {
             dadosArqNovo = dadosArqNovo + "  ADR" + sufixo + ": " + reservaMesas[i].getAdminResp() + "\n";
             dadosArqNovo = dadosArqNovo + "  HOR" + sufixo + ": " + reservaMesas[i].getHoraRegistro() + "\n";
             dadosArqNovo = dadosArqNovo + "  DTR" + sufixo + ": " + reservaMesas[i].getDataRegistro() + "\n";
-            dadosArqNovo = dadosArqNovo + "  HAB" + sufixo + ": " + reservaMesas[i].getMesaHabilitada() + "\n";
         }
         dadosArqNovo = dadosArqNovo + "}";
 
@@ -384,7 +382,6 @@ public class VlglService {
             dadosArqNovo = dadosArqNovo + "  ADR" + sufixo + ": null\n";
             dadosArqNovo = dadosArqNovo + "  HOR" + sufixo + ": null\n";
             dadosArqNovo = dadosArqNovo + "  DTR" + sufixo + ": null\n";
-            dadosArqNovo = dadosArqNovo + "  HAB" + sufixo + ": null\n";
         }
         dadosArqNovo = dadosArqNovo + "}";
 
