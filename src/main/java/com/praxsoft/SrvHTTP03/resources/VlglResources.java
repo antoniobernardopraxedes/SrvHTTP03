@@ -15,10 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -62,12 +58,10 @@ public class VlglResources {
         vlglService.Terminal("Solicitação de reservas na data: " + dataReserva, false);
 
         List<ReservaDb> reservaDbList = reservaService.buscarDataReserva(dataReserva);
-
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("application/json"))
                 .body(reservaDbList);
-                //.body(reservaMesas);
     }
 
     @PostMapping(value = "/vlgl/reserva")
@@ -83,7 +77,26 @@ public class VlglResources {
             vlglService.GeraArquivoRegistroReserva(reservaDb);
 
             return ResponseEntity
-                    .status(HttpStatus.OK)
+                    .status(HttpStatus.CREATED)
+                    .contentType(MediaType.valueOf("application/json"))
+                    .body(reservaDb);
+        }
+    }
+
+    @PutMapping(value = "/vlgl/reserva/{idReserva}")
+    public ResponseEntity<?> AtualizaReserva(@PathVariable long idReserva, @RequestBody ReservaMesa reservaMesa) {
+        vlglService.Terminal("Solicitação de reserva de mesa", false);
+
+        ReservaDb reservaDb = reservaService.atualizarReserva(reservaMesa, idReserva);
+        if (reservaDb == null) {
+            return ResponseEntity.notFound().build();
+        }
+        else {
+            vlglService.GeraArquivoImpressaoReserva(reservaDb);
+            vlglService.GeraArquivoRegistroReserva(reservaDb);
+
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
                     .contentType(MediaType.valueOf("application/json"))
                     .body(reservaDb);
         }
@@ -93,16 +106,21 @@ public class VlglResources {
     public ResponseEntity<?> ExcluiReserva(@PathVariable long idReserva) {
         vlglService.Terminal("Solicitação de exclusão: id = " + idReserva, false);
 
-        //ReservaMesa reservaMesa = vlglService.GeraReservaLivre(dataReserva, idMesa);
-        if (reservaService.apagarReserva(idReserva)) {
-
-            //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            //vlglService.GeraArquivoExclusaoReserva(dataReserva, idMesa, auth.getName());
-
-            return ResponseEntity.ok().build();
+        ReservaDb reservaDb = reservaService.buscarIdReserva(idReserva);
+        if (reservaDb == null) {
+            return ResponseEntity.notFound().build();
         }
         else {
-            return ResponseEntity.notFound().build();
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            vlglService.GeraArquivoExclusaoReserva(reservaDb.getDataReserva(),
+                                                   reservaDb.getMesaSelecionada(), auth.getName());
+
+            if (reservaService.apagarReserva(idReserva)) {
+                return ResponseEntity.ok().build();
+            }
+            else {
+                return ResponseEntity.internalServerError().build();
+            }
         }
     }
 
@@ -115,8 +133,7 @@ public class VlglResources {
             return ResponseEntity.notFound().build();
         }
         else {
-            //vlglService.GeraArquivoImpressaoReserva(reservaDb);
-
+            vlglService.GeraArquivoImpressaoReserva(reservaDb);
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .contentType(MediaType.valueOf("application/json"))
@@ -132,15 +149,15 @@ public class VlglResources {
         String nomeArquivo = vlglService.getNomeArquivoImpressao();
         String arquivoImpressao = Arquivo.LeTexto(caminho, nomeArquivo);
 
-        if (arquivoImpressao != null) {
+        if (arquivoImpressao == null) {
+            return ResponseEntity.notFound().build();
+        }
+        else {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .contentType(MediaType.valueOf("text/html"))
                     .header("Content-Disposition", "attachment; filename=" + nomeArquivo)
                     .body(arquivoImpressao);
-        }
-        else {
-            return ResponseEntity.notFound().build();
         }
     }
 
@@ -156,9 +173,6 @@ public class VlglResources {
     @GetMapping(value = "/vlgl/cadastro/cliente/{nomeUsuario}")
     public ResponseEntity<?> VerificaCliente(@PathVariable String nomeUsuario) {
         vlglService.Terminal("Verificação de cliente: " + nomeUsuario, false);
-
-        //Cliente cliente = vlglService.LeArquivoCadastroCliente(nomeUsuario);
-        //if (!cliente.getNomeUsuario().equals("null")) {
 
         ClienteDb clienteDb = clienteService.buscarNomeUsuario(nomeUsuario);
         if (clienteDb == null) {
@@ -177,8 +191,6 @@ public class VlglResources {
     @PostMapping(value = "/vlgl/cadastro/cliente")
     public ResponseEntity<?> CadastraCliente(@RequestBody Cliente cliente) {
         vlglService.Terminal("Cadastro de cliente: " + cliente.getNomeUsuario(), false);
-
-        //if (vlglService.GeraCadastroCliente(cliente)) {
 
         ClienteDb clienteDb = clienteService.salvarCadastro(cliente);
         if (clienteDb == null) {
@@ -199,8 +211,6 @@ public class VlglResources {
         String nomeUsuario = cliente.getNomeUsuario();
         vlglService.Terminal("Atualização de cadastro de cliente: " + nomeUsuario, false);
 
-        //if (vlglService.AtualizaCadastroCliente(cliente)) {
-
         ClienteDb clienteDb = clienteService.atualizarCadastro(cliente, id);
         if (clienteDb == null) {
             vlglService.Terminal("Falha ao atualizar o cadastro do cliente.", false);
@@ -218,8 +228,6 @@ public class VlglResources {
     @DeleteMapping(value = "/vlgl/cadastro/cliente/{id}")
     public ResponseEntity<?> ExcluiCadastroCliente(@PathVariable long id) {
         vlglService.Terminal("Exclusão de cadastro de cliente: id = " + id, false);
-
-        //if (vlglService.ExcluiCadastroCliente(nomeUsuario)) {
 
         if (clienteService.apagarCadastro(id)) {
             return ResponseEntity.ok().build();

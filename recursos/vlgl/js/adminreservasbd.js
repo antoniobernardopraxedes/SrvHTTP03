@@ -179,7 +179,6 @@ function VerificaMesasData() {
 
                 for (let j = 0; j < numReservas; j++) {
                    let idMesa = dadosJson[j].mesaSelecionada;
-                   //let numMesa = parseInt(idMesa[1] + idMesa[2]);
                    let numMesa = NumMesa(idMesa);
                    InfoIdMesa[numMesa] = dadosJson[j].id;
                    InfoMesaSelecionada[numMesa] = idMesa;
@@ -210,20 +209,6 @@ function VerificaMesasData() {
             document.getElementById("botaoresconf").style.backgroundColor = "#e7e5e5";
             document.getElementById("botaoresconf").style.color = "black";
         }
-    }
-}
-
-function MostraArray() {
-
-    for (let i = 0; i < NumMesas; i++) {
-
-        console.log("    ");
-        console.log("numMesa = " + i);
-        console.log("id[" + i + "] = " + InfoIdMesa[i]);
-        console.log("mesaSelecionada[" + i + "] = " + InfoMesaSelecionada[i]);
-        console.log("numPessoas[" + i + "] = " + InfoNumPessoas[i]);
-        console.log("nomeUsuario[" + i + "] = " + InfoNomeUsuario[i]);
-        console.log("horaChegada[" + i + "] = " + InfoHoraChegada[i]);
     }
 }
 
@@ -321,7 +306,6 @@ function ConverteFormatoData(dataR) {
 function AtualizaMesas() {
 
     for (let k = 0; k < NumMesas; k++) {
-
         let idMesa = InfoMesaSelecionada[k];
         let numPessoas = InfoNumPessoas[k];
         let nomeUsuario = InfoNomeUsuario[k];
@@ -587,8 +571,16 @@ function SelecionaMesa(mesa) {
           requisicao.send(null);
 
           requisicao.onload = function() {
-              MostraDadosReserva(requisicao);
-              EscreveTexto("Servidor: informações da reserva ", "info1");
+              let statusHTTP = requisicao.status;
+              if ((statusHTTP >= 200) && (statusHTTP < 300)) {
+                  CarregaDadosReserva(requisicao)
+                  MostraDadosReserva();
+                  EscreveTexto("Servidor: informações da reserva ", "info1");
+              }
+              else {
+                EscreveTexto("Servidor: falha ao solicitar a reserva ", "info1");
+                LimpaCamposInfo();
+              }
           };
 
           requisicao.ontimeout = function(e) {
@@ -600,8 +592,15 @@ function SelecionaMesa(mesa) {
           HabilitaExclusao = true;  // Após a consulta da mesa, habilita a função de exclusão de reserva
         }
         else {  // Se é seleção de mesa para reserva, guarda as informações e habilita o botão confirma
-          let msgConfRes = "Confirma a reserva da " + NomeMesa(mesa) + " para " + SolicitaReservaMesa.nomeCliente;
-          msgConfRes = msgConfRes + " em " + DataReserva + "?";
+          let msgInt;
+          if (InfoIdMesa[NumMesa(mesa)] > 0 ) {
+              msgInt = "atualização da reserva";
+          }
+          else {
+              msgInt = "reserva";
+          }
+          let msgConfRes = "Confirma a " + msgInt + " da " + NomeMesa(mesa) + " para ";
+          msgConfRes = msgConfRes + SolicitaReservaMesa.nomeCliente + " em " + DataReserva + "?";
           if (confirm(msgConfRes)) {
               SolicitaReservaMesa.mesaSelecionada = mesa;
               ConfirmaReserva(mesa);
@@ -618,9 +617,8 @@ function SelecionaMesa(mesa) {
 // Data: 30/09/2021                                                                                                   *
 //                                                                                                                    *
 // Função: é chamada cada vez que o usuário pressiona o botão Confirma. Envia uma mensagem para o servidor com todas  *
-//         as informações sobre a solicitação da reserva da mesa. O servidor deve responder uma mensagem com essas    *
-//         informações confirmando a reserva. Então, esta função lê as informações recebidas do servidor e            *
-//         apresenta na tela.                                                                                         *
+//         as informações sobre a solicitação da reserva da mesa. Se a mesa selecionada já tem uma reserva, é usado   *
+//         o método PUT e a reserva é atualizada. Se a mesa está livre, é usado o método POST e a reserva é criada.   *
 //                                                                                                                    *
 // Entrada: não tem                                                                                                   *                                                                                                   *
 //                                                                                                                    *
@@ -631,7 +629,13 @@ function ConfirmaReserva(mesaSelecionada) {
 
     let requisicao = new XMLHttpRequest();
     let recurso = "reserva";
-    requisicao.open("POST", recurso, true);
+    if (InfoIdMesa[NumMesa(mesaSelecionada)] == 0 ) {
+        requisicao.open("POST", recurso, true);
+    }
+    else {
+        recurso = "reserva/" + NumMesa(mesaSelecionada);
+        requisicao.open("PUT", recurso, true);
+    }
     requisicao.setRequestHeader("Content-Type", "application/json;charset=utf-8");
     requisicao.timeout = 2000;
 
@@ -639,9 +643,24 @@ function ConfirmaReserva(mesaSelecionada) {
     requisicao.send(JSON.stringify(SolicitaReservaMesa));
 
     requisicao.onload = function() {
-        MostraDadosReserva(requisicao);
-        EscreveTexto("Servidor: confirmação da reserva ", "info1");
-        dataOK = false;
+        let statusHTTP = requisicao.status;
+        if ((statusHTTP >= 200) && (statusHTTP < 300)) {
+            CarregaDadosReserva(requisicao)
+            MostraDadosReserva();
+            EscreveTexto("Servidor: confirmação da reserva ", "info1");
+            dataOK = false;
+            let numMesa = NumMesa(ReservaRec.mesaSelecionada);
+            InfoIdMesa[numMesa] = ReservaRec.id;
+            InfoMesaSelecionada[numMesa] = ReservaRec.mesaSelecionada;
+            InfoNumPessoas[numMesa] = ReservaRec.numPessoas;
+            InfoNomeUsuario[numMesa] = ReservaRec.nomeUsuario;
+            InfoHoraChegada[numMesa] = ReservaRec.horaChegada;
+            AtualizaMesas();
+        }
+        else {
+            EscreveTexto("Servidor: falha ao confirmar da reserva ", "info1");
+            LimpaCamposInfo();
+        }
     };
 
     requisicao.ontimeout = function(e) {
@@ -692,7 +711,13 @@ function ExcluiReserva() {
                     EscreveTexto("Servidor: confirmada a exclusão da reserva", "info1");
                     LimpaCamposInfo();
                     EscreveTexto("", "campodownload");
-                    VerificaMesasData();
+                    let numMesa = NumMesa(ReservaRec.mesaSelecionada);
+                    InfoIdMesa[numMesa] = 0;
+                    InfoNumPessoas[numMesa] = "";
+                    InfoNomeUsuario[numMesa] = "";
+                    InfoHoraChegada[numMesa] = "";
+                    AtualizaMesas();
+
                 }
                 else {
                     EscreveTexto("Servidor: falha ao excluir a reserva", "info1");
@@ -727,10 +752,9 @@ function ExcluiReserva() {
 //
 function ConsultaReservaMesa() {
 
-    CarregaVariaveisFormulario();
     LimpaCamposInfo();
 
-    if (DataReserva != "") {
+    if (dataReserva.value != "") {
        if (dataOK) {
            EscreveTexto("Selecione a mesa para consulta", "info1");
            HabilitaSelMesa = true;
@@ -746,21 +770,22 @@ function ConsultaReservaMesa() {
 }
 
 //*********************************************************************************************************************
-// Nome da função: MostraDadosReserva                                                                                 *
+// Nome da função: CarregaDadosReserva                                                                                *
 //                                                                                                                    *
-// Data: 10/10/2021                                                                                                   *
+// Data: 20/10/2021                                                                                                   *
 //                                                                                                                    *
-// Função: faz o parsing de uma mensagem recebida do servidor em formato Json, lê as informações da reserva da mesa   *
-//         na data e apresenta as informações.                                                                        *
+// Função: faz o parsing de uma mensagem recebida do servidor em formato Json, lê as informações da reserva e         *
+//         carrega nas variáveis.                                                                                     *
 //                                                                                                                    *
 // Entrada: mensagem Json recebida do servidor (texto)                                                                *                                                                                                   *
 //                                                                                                                    *
 // Saída: não tem                                                                                                     *
 //*********************************************************************************************************************
 //
-function MostraDadosReserva(respostaJson) {
+function CarregaDadosReserva(respostaJson) {
 
     let dadosJson = JSON.parse(respostaJson.responseText);
+    ReservaRec.id = dadosJson.id;
     ReservaRec.mesaSelecionada = dadosJson.mesaSelecionada;
     ReservaRec.dataReserva = dadosJson.dataReserva;
     ReservaRec.nomeUsuario = dadosJson.nomeUsuario;
@@ -770,9 +795,24 @@ function MostraDadosReserva(respostaJson) {
     ReservaRec.adminResp = dadosJson.adminResp;
     ReservaRec.horaRegistro = dadosJson.horaRegistro;
     ReservaRec.dataRegistro = dadosJson.dataRegistro;
+}
+
+//*********************************************************************************************************************
+// Nome da função: MostraDadosReserva                                                                                 *
+//                                                                                                                    *
+// Data: 20/10/2021                                                                                                   *
+//                                                                                                                    *
+// Função: mostra todas as informações de uma reserva.                                                                *
+//                                                                                                                    *
+// Entrada: não tem                                                                                                   *                                                                                                   *
+//                                                                                                                    *
+// Saída: não tem                                                                                                     *
+//*********************************************************************************************************************
+//
+function MostraDadosReserva() {
 
     LimpaCamposInfo();
-    if (ReservaRec.nomeUsuario != "") {
+    if (ReservaRec.id > 0) {
         EscreveTexto("Reserva da " + NomeMesa(ReservaRec.mesaSelecionada) + " em " + ReservaRec.dataReserva, "info2");
         EscreveTexto("Nome de usuário: " + ReservaRec.nomeUsuario, "info3");
         EscreveTexto("Nome completo: " + ReservaRec.nomeCliente, "info4");
@@ -786,33 +826,6 @@ function MostraDadosReserva(respostaJson) {
     else {
         EscreveTexto(NomeMesa(ReservaRec.mesaSelecionada) + " livre", "info2");
     }
-    AtualizaMesa(ReservaRec.mesaSelecionada, ReservaRec.numPessoas, ReservaRec.nomeUsuario, ReservaRec.horaChegada);
-}
-
-//*********************************************************************************************************************
-// Nome da função: AtualizaMesa                                                                                       *
-//                                                                                                                    *
-// Data: 10/10/2021                                                                                                   *
-//                                                                                                                    *
-// Função: atualiza as informações da mesa na tela (texto e cor)                                                      *
-//                                                                                                                    *
-// Entrada: identificador da mesa, número de pessoas, nome de usuário e hora de chegada da reserva                    *
-//                                                                                                                    *
-// Saída: não tem                                                                                                     *
-//*********************************************************************************************************************
-//
-function AtualizaMesa(idMesa, numPessoas, nomeUsuario, horaChegada) {
-
-    if (nomeUsuario == "null") {
-        document.getElementById(idMesa).style.backgroundColor = "#33ff71";
-        document.getElementById(idMesa).innerHTML = NomeMesa(idMesa) + " " + CapacidadeMesa;
-    }
-    else {
-        document.getElementById(idMesa).style.backgroundColor = "#aeb6bf";
-        let infoMesa = NomeMesa(idMesa) + ": " + numPessoas + " pessoas " + nomeUsuario + " " + horaChegada;
-        document.getElementById(idMesa).innerHTML = infoMesa;
-    }
-
 }
 
 //*********************************************************************************************************************
