@@ -9,4 +9,6 @@ public interface ReservasRepository extends JpaRepository<ReservaDb, Long> {
 
     List<ReservaDb> findByDataReserva(String dataReserva);
 
+    ReservaDb findById(long id);
+
 }

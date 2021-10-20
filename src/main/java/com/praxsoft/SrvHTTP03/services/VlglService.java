@@ -1,6 +1,7 @@
 package com.praxsoft.SrvHTTP03.services;
 
 import com.praxsoft.SrvHTTP03.domain.Cliente;
+import com.praxsoft.SrvHTTP03.domain.ReservaDb;
 import com.praxsoft.SrvHTTP03.domain.ReservaMesa;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -493,20 +494,20 @@ public class VlglService {
     // Saida: boolean - true se a operação foi realizada corretamente                                                  *
     //******************************************************************************************************************
     //
-    public boolean GeraArquivoImpressaoReserva(ReservaMesa reservaMesa) {
+    public boolean GeraArquivoImpressaoReserva(ReservaDb reservaDb) {
         boolean resultado = false;
 
-        String nomeMesa = reservaMesa.getMesaSelecionada();
+        String nomeMesa = reservaDb.getMesaSelecionada();
         if (nomeMesa.equals("A00")) { nomeMesa = "Gazebo"; }
-        String data = reservaMesa.getDataReserva();
+        String data = reservaDb.getDataReserva();
         String dia = data.substring(0, 2);
         String mes = data.substring(3, 5);
         String ano = data.substring(6, 10);
         String dataReserva = dia + "/" + mes + "/" + ano;
-        String nomeUsuario = reservaMesa.getNomeUsuario();
-        String nomeCliente = reservaMesa.getNomeCliente();
-        String numPessoas = reservaMesa.getNumPessoas();
-        String horaChegada = reservaMesa.getHoraChegada();
+        String nomeUsuario = reservaDb.getNomeUsuario();
+        String nomeCliente = reservaDb.getNomeCliente();
+        String numPessoas = reservaDb.getNumPessoas();
+        String horaChegada = reservaDb.getHoraChegada();
 
         String caminho = "recursos/vlgl/imp/";
         String camposImp = Arquivo.LeTexto(caminho, "camposimp.txt");
@@ -566,27 +567,27 @@ public class VlglService {
     // Saida: boolean - true se a operação foi realizada corretamente                                                  *
     //******************************************************************************************************************
     //
-    public boolean GeraArquivoRegistroReserva(ReservaMesa reservaMesa) {
+    public boolean GeraArquivoRegistroReserva(ReservaDb reservaDb) {
 
-        String nomeMesa = reservaMesa.getMesaSelecionada();
+        String nomeMesa = reservaDb.getMesaSelecionada();
         if (nomeMesa.equals("A00")) { nomeMesa = "Gazebo"; }
-        String data = reservaMesa.getDataReserva();
+        String data = reservaDb.getDataReserva();
         String dia = data.substring(0, 2);
         String mes = data.substring(3, 5);
         String ano = data.substring(6, 10);
         String dataReserva = dia + "/" + mes + "/" + ano;
 
         String arqReg = "Registro de reserva da mesa " + nomeMesa + " em " + dataReserva + "\n\n";
-        arqReg = arqReg + "Nome de usuário: " + reservaMesa.getNomeUsuario() + "\n";
-        arqReg = arqReg + "Nome do cliente: " + reservaMesa.getNomeCliente() + "\n";
-        arqReg = arqReg + "Número de pessoas: " + reservaMesa.getNumPessoas() + "\n";
-        arqReg = arqReg + "Hora de chegada: " + reservaMesa.getHoraChegada() + "\n";
-        arqReg = arqReg + "Responsável pela reserva: " + reservaMesa.getAdminResp() + "\n";
+        arqReg = arqReg + "Nome de usuário: " + reservaDb.getNomeUsuario() + "\n";
+        arqReg = arqReg + "Nome do cliente: " + reservaDb.getNomeCliente() + "\n";
+        arqReg = arqReg + "Número de pessoas: " + reservaDb.getNumPessoas() + "\n";
+        arqReg = arqReg + "Hora de chegada: " + reservaDb.getHoraChegada() + "\n";
+        arqReg = arqReg + "Responsável pela reserva: " + reservaDb.getAdminResp() + "\n";
         arqReg = arqReg + "Hora do registro da reserva: " + ImpHora() + "\n";
         arqReg = arqReg + "Data do registro da reserva: " + ImpData() + "\n";
 
         String caminho = Arquivo.getDiretorioBd() + "relatorios/";
-        String nomeArquivo = "registroreserva-" + reservaMesa.getNomeUsuario() + "-" + nomeMesa + "-" + data + ".txt";
+        String nomeArquivo = "registroreserva-" + reservaDb.getNomeUsuario() + "-" + nomeMesa + "-" + data + ".txt";
         nomeArquivoRegistro = nomeArquivo;
         if (Arquivo.Existe(caminho, nomeArquivo)) {
             Arquivo.Apaga(caminho, nomeArquivo);

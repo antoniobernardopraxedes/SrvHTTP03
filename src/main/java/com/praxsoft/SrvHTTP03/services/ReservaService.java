@@ -16,8 +16,11 @@ public class ReservaService {
     private ReservasRepository reservasRepository;
 
     public List<ReservaDb> buscarDataReserva(String dataReserva) {
-
         return reservasRepository.findByDataReserva(dataReserva);
+    }
+
+    public ReservaDb buscarIdReserva(long idReserva) {
+        return reservasRepository.findById(idReserva);
     }
 
     public ReservaDb salvarReserva(ReservaMesa reservaMesa) {

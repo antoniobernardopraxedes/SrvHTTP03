@@ -17,12 +17,20 @@ const horarioChegada = form.elements['hora'];
 // Variáveis globais
 var NomeUsuarioAdmin;
 var CapacidadeMesa;
-var IdMesaConsulta;
+var IdMesaConsulta = 0;
+var NomeMesaConsulta;
 var dataOK = false;
 var numPessoasOK = false;
 var horaChegadaOK = false;
 var consultaMesa = false;
 var HabilitaExclusao = false;
+
+var NumMesas = 17;
+var InfoIdMesa = new Array(NumMesas);
+var InfoMesaSelecionada = new Array(NumMesas);
+var InfoNumPessoas = new Array(NumMesas);
+var InfoNomeUsuario = new Array(NumMesas);
+var InfoHoraChegada = new Array(NumMesas);
 
 // Objeto que recebe do servidor as informações do cliente
 const Cliente = { id: 0,
@@ -59,11 +67,7 @@ const SolicitaReservaMesa = { id: 0,
                               horaChegada: "",
                               adminResp: "" };
 
-const InfoMesa[17] = { id: 0,
-                       mesaSelecionada: "",
-                       numPessoas: "",
-                       nomeUsuario: "",
-                       horaChegada: "" };
+
 
 VerificaAdmin()
 
@@ -158,25 +162,33 @@ function VerificaMesasData() {
 
             requisicao.onload = function() {
                 let dadosJson = JSON.parse(requisicao.responseText);
-                let numMesas = 17;
-                let letra = "A";
-                let idMesa = "";
-                let numReservas = dadosJson.length;
-                console.log("dadosJason.length = " + numReservas);
 
-                for (let j = 0; j < numMesas; j++) {
+                let letra = "A";
+                for (let j = 0; j < NumMesas; j++) {
                     if (j > 8) letra = "B";
-                    idMesa = letra + IntToStr2(j);
-                    AtualizaMesa(idMesa, "null", "null", "null");
+
+                    InfoIdMesa[j] = 0;
+                    InfoMesaSelecionada[j] = letra + IntToStr2(j);
+                    InfoNumPessoas[j] = "";
+                    InfoNomeUsuario[j] = "";
+                    InfoHoraChegada[j] = "";
                 }
+
+                let numReservas = dadosJson.length;
+                console.log("Número de reservas no dia = " + numReservas);
 
                 for (let j = 0; j < numReservas; j++) {
-                   let mesaSelecionada = dadosJson[j].mesaSelecionada;
-                   let nomeUsuario = dadosJson[j].nomeUsuario;
-                   let numPessoas = dadosJson[j].numPessoas;
-                   let horaChegada = dadosJson[j].horaChegada;
-                   AtualizaMesa(mesaSelecionada, numPessoas, nomeUsuario, horaChegada);
+                   let idMesa = dadosJson[j].mesaSelecionada;
+                   //let numMesa = parseInt(idMesa[1] + idMesa[2]);
+                   let numMesa = NumMesa(idMesa);
+                   InfoIdMesa[numMesa] = dadosJson[j].id;
+                   InfoMesaSelecionada[numMesa] = idMesa;
+                   InfoNumPessoas[numMesa] = dadosJson[j].numPessoas;
+                   InfoNomeUsuario[numMesa] = dadosJson[j].nomeUsuario;
+                   InfoHoraChegada[numMesa] = dadosJson[j].horaChegada;
                 }
+
+                AtualizaMesas();
 
                dataOK = true;
                EscreveTexto("Servidor: mapa de reservas do dia " + DataReserva, "info1");
@@ -201,6 +213,20 @@ function VerificaMesasData() {
     }
 }
 
+function MostraArray() {
+
+    for (let i = 0; i < NumMesas; i++) {
+
+        console.log("    ");
+        console.log("numMesa = " + i);
+        console.log("id[" + i + "] = " + InfoIdMesa[i]);
+        console.log("mesaSelecionada[" + i + "] = " + InfoMesaSelecionada[i]);
+        console.log("numPessoas[" + i + "] = " + InfoNumPessoas[i]);
+        console.log("nomeUsuario[" + i + "] = " + InfoNomeUsuario[i]);
+        console.log("horaChegada[" + i + "] = " + InfoHoraChegada[i]);
+    }
+}
+
 //*********************************************************************************************************************
 // Nome da função: VerificaFormatoData                                                                                *
 //                                                                                                                    *
@@ -215,9 +241,9 @@ function VerificaMesasData() {
 //
 function VerificaFormatoData(dataR) {
     resultado = true;
-    var dia = 0;
-    var mes = 0;
-    var ano = 0;
+    let dia = 0;
+    let mes = 0;
+    let ano = 0;
     let diasMes = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; // Dias de cada mês
     if ((dataR.length != 10) || (dataR[2] != "/") || (dataR[5] != "/")) {
         resultado = false;
@@ -241,10 +267,10 @@ function VerificaFormatoData(dataR) {
         }
     }
     if (resultado) {
-        var Dia;
+        let Dia;
         if (dia < 10) { Dia = "0" + dia; }
         else { Dia = dia; }
-        var Mes;
+        let Mes;
         if (mes < 10) { Mes = "0" + mes; }
         else { Mes = mes; }
 
@@ -278,6 +304,43 @@ function ConverteFormatoData(dataR) {
     else { Mes = mes; }
 
     return (Dia + "-" + Mes + "-" + ano);
+}
+
+//*********************************************************************************************************************
+// Nome da função: AtualizaMesas                                                                                      *
+//                                                                                                                    *
+// Data: 20/10/2021                                                                                                   *
+//                                                                                                                    *
+// Função: lê o array InfoMesas e atualiza as informações da mesa na tela (texto e cor)                               *
+//                                                                                                                    *
+// Entrada: não tem                                                                                                   *
+//                                                                                                                    *
+// Saída: não tem                                                                                                     *
+//*********************************************************************************************************************
+//
+function AtualizaMesas() {
+
+    for (let k = 0; k < NumMesas; k++) {
+
+        let idMesa = InfoMesaSelecionada[k];
+        let numPessoas = InfoNumPessoas[k];
+        let nomeUsuario = InfoNomeUsuario[k];
+        let horaChegada = InfoHoraChegada[k];
+
+        if (InfoIdMesa[k] == 0) {
+            document.getElementById(idMesa).style.backgroundColor = "#33ff71";
+            document.getElementById(idMesa).innerHTML = NomeMesa(idMesa) + " " + CapacidadeMesa;
+        }
+        else {
+            document.getElementById(idMesa).style.backgroundColor = "#aeb6bf";
+            let infoMesa = NomeMesa(idMesa) + ": " + numPessoas + " pessoas " + nomeUsuario + " " + horaChegada;
+            document.getElementById(idMesa).innerHTML = infoMesa;
+        }
+    }
+}
+
+function NumMesa(idMesa) {
+  return parseInt(idMesa[1] + idMesa[2]);
 }
 
 //*********************************************************************************************************************
@@ -514,9 +577,10 @@ function SelecionaMesa(mesa) {
     if (HabilitaSelMesa) {
 
         if (consultaMesa) { // Se é consulta de dados da reserva, solicita os dados ao servidor e apresenta
-          IdMesaConsulta = mesa;
+          IdMesaConsulta = InfoIdMesa[NumMesa(mesa)];
+          NomeMesaConsulta = NomeMesa(mesa);
           let requisicao = new XMLHttpRequest();
-          let recurso = "reserva/consulta/" + ConverteFormatoData(DataReserva) + mesa;
+          let recurso = "reserva/consulta/" + InfoIdMesa[NumMesa(mesa)];
           requisicao.open("GET", recurso, true);
           requisicao.timeout = 2000;
           EscreveMsgEnvSrv();
@@ -609,12 +673,12 @@ function ConfirmaReserva(mesaSelecionada) {
 function ExcluiReserva() {
 
     if (HabilitaExclusao) {  // Se o flag de habilitação de exclusão é true, envia solicitação ao servidor
-        let MsgExclusao = "Confirma a exclusão da reserva da " + NomeMesa(IdMesaConsulta);
-        MsgExclusao = MsgExclusao + " na data " + DataReserva + "?";
+        let MsgExclusao = "Confirma a exclusão da reserva da " + NomeMesa(ReservaRec.mesaSelecionada);
+        MsgExclusao = MsgExclusao + " na data " + ReservaRec.dataReserva + "?";
 
         if (confirm(MsgExclusao)) {
             let requisicao = new XMLHttpRequest();
-            let recurso = "reserva/exclui/" + DataResEnvio + "/" + IdMesaConsulta;
+            let recurso = "reserva/exclui/" + IdMesaConsulta;
             requisicao.open("DELETE", recurso, true);
             requisicao.timeout = 2000;
             EscreveMsgEnvSrv();
@@ -622,9 +686,17 @@ function ExcluiReserva() {
 
             LimpaCamposInfo();
             requisicao.onload = function() {
-                MostraDadosReserva(requisicao);
-                EscreveTexto("Servidor: confirmada a exclusão da reserva", "info1");
-                EscreveTexto("                                                  ", "campodownload");
+                let statusHTTP = requisicao.status;
+
+                if (statusHTTP == 200) {
+                    EscreveTexto("Servidor: confirmada a exclusão da reserva", "info1");
+                    LimpaCamposInfo();
+                    EscreveTexto("", "campodownload");
+                    VerificaMesasData();
+                }
+                else {
+                    EscreveTexto("Servidor: falha ao excluir a reserva", "info1");
+                }
             };
 
             requisicao.ontimeout = function(e) {
@@ -700,7 +772,7 @@ function MostraDadosReserva(respostaJson) {
     ReservaRec.dataRegistro = dadosJson.dataRegistro;
 
     LimpaCamposInfo();
-    if (ReservaRec.nomeUsuario != "null") {
+    if (ReservaRec.nomeUsuario != "") {
         EscreveTexto("Reserva da " + NomeMesa(ReservaRec.mesaSelecionada) + " em " + ReservaRec.dataReserva, "info2");
         EscreveTexto("Nome de usuário: " + ReservaRec.nomeUsuario, "info3");
         EscreveTexto("Nome completo: " + ReservaRec.nomeCliente, "info4");

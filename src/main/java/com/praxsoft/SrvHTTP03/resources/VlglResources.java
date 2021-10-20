@@ -61,8 +61,6 @@ public class VlglResources {
     public ResponseEntity<?> VerificaData(@PathVariable String dataReserva) {
         vlglService.Terminal("Solicitação de reservas na data: " + dataReserva, false);
 
-        //ReservaMesa[] reservaMesas = vlglService.LeArquivoReservaMesa(dataReserva);
-
         List<ReservaDb> reservaDbList = reservaService.buscarDataReserva(dataReserva);
 
         return ResponseEntity
@@ -81,8 +79,8 @@ public class VlglResources {
             return ResponseEntity.notFound().build();
         }
         else {
-            vlglService.GeraArquivoImpressaoReserva(reservaMesa);
-            vlglService.GeraArquivoRegistroReserva(reservaMesa);
+            vlglService.GeraArquivoImpressaoReserva(reservaDb);
+            vlglService.GeraArquivoRegistroReserva(reservaDb);
 
             return ResponseEntity
                     .status(HttpStatus.OK)
@@ -91,38 +89,39 @@ public class VlglResources {
         }
     }
 
-    @DeleteMapping(value = "/vlgl/reserva/exclui/{dataReserva}/{idMesa}")
-    public ResponseEntity<?> ExcluiReserva(@PathVariable String dataReserva, @PathVariable String idMesa) {
-        vlglService.Terminal("Solicitação de exclusão: " + dataReserva + " - Mesa: " + idMesa, false);
+    @DeleteMapping(value = "/vlgl/reserva/exclui/{idReserva}")
+    public ResponseEntity<?> ExcluiReserva(@PathVariable long idReserva) {
+        vlglService.Terminal("Solicitação de exclusão: id = " + idReserva, false);
 
-        ReservaMesa reservaMesa = vlglService.GeraReservaLivre(dataReserva, idMesa);
-        if (vlglService.EscreveArquivoReservaMesa(reservaMesa)) {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            vlglService.GeraArquivoExclusaoReserva(dataReserva, idMesa, auth.getName());
+        //ReservaMesa reservaMesa = vlglService.GeraReservaLivre(dataReserva, idMesa);
+        if (reservaService.apagarReserva(idReserva)) {
 
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .contentType(MediaType.valueOf("application/json"))
-                    .body(reservaMesa);
+            //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            //vlglService.GeraArquivoExclusaoReserva(dataReserva, idMesa, auth.getName());
+
+            return ResponseEntity.ok().build();
         }
         else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @GetMapping(value = "/vlgl/reserva/consulta/{dataReservaidMesa}")
-    public ResponseEntity<?> ConsultaReserva(@PathVariable String dataReservaidMesa) {
-        String dataReserva = dataReservaidMesa.substring(0, 10);
-        String idMesa = dataReservaidMesa.substring(10, 13);
-        vlglService.Terminal("Solicitação de consulta - Data: " + dataReserva + " - Mesa: " + idMesa, false);
+    @GetMapping(value = "/vlgl/reserva/consulta/{idReserva}")
+    public ResponseEntity<?> ConsultaReserva(@PathVariable long idReserva) {
+        vlglService.Terminal("Solicitação de consulta - id: " + idReserva, false);
 
-        ReservaMesa reservaMesa = vlglService.ConsultaReservaMesa(dataReserva, idMesa);
-        vlglService.GeraArquivoImpressaoReserva(reservaMesa);
+        ReservaDb reservaDb = reservaService.buscarIdReserva(idReserva);
+        if (reservaDb == null) {
+            return ResponseEntity.notFound().build();
+        }
+        else {
+            //vlglService.GeraArquivoImpressaoReserva(reservaDb);
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("application/json"))
-                .body(reservaMesa);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .contentType(MediaType.valueOf("application/json"))
+                    .body(reservaDb);
+        }
     }
 
     @GetMapping(value = "/vlgl/reserva/impressao")
