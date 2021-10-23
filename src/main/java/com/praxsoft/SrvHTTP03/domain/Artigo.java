@@ -4,27 +4,31 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import javax.persistence.*;
+
+@Entity
 public class Artigo {
 
-    private int Id;
+    @javax.persistence.Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long Id;
+
     private String nome;
     private String autor;
 
     @JsonInclude(Include.NON_NULL)
     @JsonFormat(pattern = "dd/MM/yyyy")
-    private String publicacao;
+    private String dataPublicacao;
 
-    private String Conteudo;
+    private String conteudo;
 
     public Artigo() {}
     public Artigo(String nome) {
         this.nome = nome;
     }
 
-    public int getId() {
-        return Id;
-    }
-
+    public long getId() { return Id; }
     public void setId(int id) {
         Id = id;
     }
@@ -44,19 +48,11 @@ public class Artigo {
     }
 
     public String getPublicacao() {
-        return publicacao;
+        return dataPublicacao;
     }
 
     public void setPublicacao(String publicacao) {
-        this.publicacao = publicacao;
-    }
-
-    public String getConteudo() {
-        return Conteudo;
-    }
-
-    public void setConteudo(String conteudo) {
-        Conteudo = conteudo;
+        this.dataPublicacao = publicacao;
     }
 
 }

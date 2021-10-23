@@ -5,6 +5,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SiteService {
 
@@ -58,6 +60,8 @@ public class SiteService {
         }
         else {
             String arquivoTxt = Arquivo.LeTexto(caminho, nomeArquivo);
+
+            System.out.println(arquivoTxt);
 
             if (arquivoTxt == null) {
                 return ResponseEntity

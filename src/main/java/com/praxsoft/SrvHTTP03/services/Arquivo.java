@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Arquivo {
@@ -103,8 +105,7 @@ public class Arquivo {
     //******************************************************************************************************************
     // Nome do Método: LeTexto                                                                                         *
     //	                                                                                                               *
-    // Funcao: lê um arquivo texto (sequência de caracteres) do diretório recursos dentro do diretŕorio principal do   *
-    //         servidor.                                                                                               *
+    // Funcao: lê um arquivo texto (sequência de caracteres).                                                          *
     //                                                                                                                 *
     // Entrada: string com o caminho do arquivo e string com o nome do arquivo                                         *
     //                                                                                                                 *
@@ -113,10 +114,10 @@ public class Arquivo {
     //
     public static String LeTexto(String caminho, String nomeArquivo) {
 
-        File Arquivo = new File(caminho + nomeArquivo);
+        File arquivo = new File(caminho + nomeArquivo);
         String arquivoLido = "";
         try {
-            BufferedReader br = new BufferedReader(new FileReader(Arquivo));
+            BufferedReader br = new BufferedReader(new FileReader(arquivo));
             String linha;
             while ((linha = br.readLine()) != null) {
                 arquivoLido = arquivoLido + linha + "\n";
@@ -129,10 +130,46 @@ public class Arquivo {
     }
 
     //******************************************************************************************************************
+    // Nome do Método: LeParagrafos                                                                                    *
+    //	                                                                                                               *
+    // Funcao: lê um arquivo texto (sequência de caracteres) e retorna um array de strings com os parágrafos.          *
+    //         No arquivo lido, deve haver uma linha vazia entre um parágrafo e outro.                                 *
+    //                                                                                                                 *
+    // Entrada: string com o caminho do arquivo e string com o nome do arquivo                                         *
+    //                                                                                                                 *
+    // Saida: array de string com os parágrafos do arquivo texto lido. Se ocorrer falha na leitura, retorna null       *
+    //******************************************************************************************************************
+    //
+    public static List<String> LeParagrafos(String caminho, String nomeArquivo) {
+
+        File arquivo = new File(caminho + nomeArquivo);
+        List<String> arrayListParagrafo = new ArrayList<>();
+        String paragrafo = "";
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(arquivo));
+            int i = 0;
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                if (linha.equals("")) {
+                    arrayListParagrafo.add(paragrafo);
+                    paragrafo = linha;
+                }
+                else {
+                    paragrafo = paragrafo + linha;
+                }
+
+            }
+            return arrayListParagrafo;
+
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    //******************************************************************************************************************
     // Nome do Método: LeByte                                                                                          *
     //	                                                                                                               *
-    // Funcao: lê um arquivo binário (sequência de bytes) do diretório recursos dentro do diretŕorio principal do      *
-    //         servidor.                                                                                               *
+    // Funcao: lê um arquivo binário (sequência de bytes).                                                             *
     //                                                                                                                 *
     // Entrada: string com o caminho do arquivo e string com o nome do arquivo                                         *
     //                                                                                                                 *

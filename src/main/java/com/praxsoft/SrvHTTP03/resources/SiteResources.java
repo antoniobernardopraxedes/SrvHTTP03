@@ -49,54 +49,26 @@ public class SiteResources {
     }
 
 
+    @GetMapping(value = "/isis/novo")
+    public ResponseEntity<?> SiteNovo(@RequestHeader(value = "User-Agent") String userAgent) {
+        String nomeArquivo = "amorosnovo.html";
 
-    @GetMapping(value = "/listar")
-    public ResponseEntity<List<ClienteDb>> Listar() {
+        String caminho = Arquivo.getDiretorioRecursos() + "/isis/";
+        return siteService.LeArquivoMontaResposta(caminho, nomeArquivo, userAgent);
+    }
+
+    @GetMapping(value = "/isis/ler/{nomeArquivo}")
+    public ResponseEntity<?> EnviaParagrafos(@PathVariable String nomeArquivo) {
+
+        String caminho = Arquivo.getDiretorioRecursos() + "/isis/textos/";
+        List <String> paragrafos = Arquivo.LeParagrafos(caminho, nomeArquivo);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("application/json"))
-                .body(clienteService.listar());
+                .body(paragrafos);
     }
 
-    @GetMapping(value = "/cliente/nomeusuario/{nomeUsuario}")
-    public ResponseEntity<?> VerificaClienteNomeUsuario(@PathVariable String nomeUsuario) {
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("application/json"))
-                .body(clienteService.buscarNomeUsuario(nomeUsuario));
-    }
-
-    @GetMapping(value = "/cliente/nomeexato/{nome}")
-    public ResponseEntity<?> VerificaClienteNomeExato(@PathVariable String nome) {
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("application/json"))
-                .body(clienteService.buscarNomeExato(nome));
-    }
-
-    @GetMapping(value = "/cliente/nomeparte/{nome}")
-    public ResponseEntity<?> VerificaClienteNomeParte(@PathVariable String nome) {
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("application/json"))
-                .body(clienteService.buscarNomeParte(nome));
-    }
-
-    @GetMapping(value = "/apagar/{id}")
-    public ResponseEntity<?> Apagar(@PathVariable long id) {
-
-        clienteService.apagarCadastro(id);
-
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .contentType(MediaType.valueOf("application/json"))
-                    .body("{ \"CadastroApagado\" : \"" + id + "\"}");
-
-
-    }
 
 }
