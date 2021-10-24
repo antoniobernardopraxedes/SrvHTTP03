@@ -1,7 +1,9 @@
 package com.praxsoft.SrvHTTP03.resources;
 
+import com.praxsoft.SrvHTTP03.domain.Artigo;
 import com.praxsoft.SrvHTTP03.domain.ClienteDb;
 import com.praxsoft.SrvHTTP03.services.Arquivo;
+import com.praxsoft.SrvHTTP03.services.ArtigoService;
 import com.praxsoft.SrvHTTP03.services.ClienteService;
 import com.praxsoft.SrvHTTP03.services.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ public class SiteResources {
     private SiteService siteService;
 
     @Autowired
-    private ClienteService clienteService;
+    private ArtigoService artigoService;
 
     @GetMapping(value = "/isis")
     public ResponseEntity<?> InicioSite(@RequestHeader(value = "User-Agent") String userAgent) {
@@ -48,13 +50,22 @@ public class SiteResources {
         return siteService.LeArquivoMontaResposta(caminho, "favicon.ico", "null");
     }
 
-
     @GetMapping(value = "/isis/novo")
     public ResponseEntity<?> SiteNovo(@RequestHeader(value = "User-Agent") String userAgent) {
         String nomeArquivo = "amorosnovo.html";
 
         String caminho = Arquivo.getDiretorioRecursos() + "/isis/";
         return siteService.LeArquivoMontaResposta(caminho, nomeArquivo, userAgent);
+    }
+
+    @GetMapping(value = "/isis/listar")
+    public ResponseEntity<?> ListaArtigos() {
+        List<Artigo> listagemArtigos = artigoService.listar();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("application/json"))
+                .body(listagemArtigos);
     }
 
     @GetMapping(value = "/isis/ler/{nomeArquivo}")

@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/favicon.ico").permitAll()
                 .antMatchers("/isis").permitAll()
-                .antMatchers("/isis/*").permitAll()
+                .antMatchers("/isis/*/*").permitAll()
                 .antMatchers("/atualiza").permitAll()
                 .antMatchers("/local001.xml").permitAll()
                 .anyRequest().authenticated()

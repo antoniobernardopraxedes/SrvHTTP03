@@ -1,9 +1,5 @@
 package com.praxsoft.SrvHTTP03.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import javax.persistence.*;
 
 @Entity
@@ -12,47 +8,36 @@ public class Artigo {
     @javax.persistence.Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long Id;
+    private Long id;
 
-    private String nome;
+    private String titulo;
     private String autor;
-
-    @JsonInclude(Include.NON_NULL)
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private String dataPublicacao;
+    private String palavrasChave;
 
-    private String conteudo;
-
-    public Artigo() {}
-    public Artigo(String nome) {
-        this.nome = nome;
+    public Long getId() { return id; }
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public long getId() { return Id; }
-    public void setId(int id) {
-        Id = id;
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String nome) {
+        this.titulo = nome;
     }
 
-    public String getNome() { return nome; }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getAutor() {
-        return autor;
-    }
-
+    public String getAutor() { return autor; }
     public void setAutor(String autor) {
         this.autor = autor;
     }
 
-    public String getPublicacao() {
+    public String getDataPublicacao() {
         return dataPublicacao;
     }
-
-    public void setPublicacao(String publicacao) {
+    public void setDataPublicacao(String publicacao) {
         this.dataPublicacao = publicacao;
     }
+
+    public String getPalavrasChave() { return palavrasChave; }
+    public void setPalavrasChave(String palavrasChave) { this.palavrasChave = palavrasChave; }
 
 }

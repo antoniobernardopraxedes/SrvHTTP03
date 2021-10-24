@@ -8,7 +8,7 @@ body{
 }
 
 .textologo{
-    font-size: 30px;
+    font-size: 25px;
     padding-left: 10px;
 }
 
@@ -57,16 +57,6 @@ body{
     margin-right: 10px;
 }
 
-.margin{
-    padding-top: 30px;
-    padding-bottom: 30px;
-}
-
-.rodape{
-    background-color:  #a1c5cd ;
-    font-size: 15px;
-}
-
 .campoform {
   font-size: 16px;
   width: 320px;
@@ -78,63 +68,9 @@ body{
   padding-bottom: 5px;
 }
 
-.campoform2 {
-  font-size: 16px;
-  width: 170px;
-  margin-top: 5px;
-  margin-left: 10px;
-  margin-right: 0px;
-  padding-left: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-
-.campoform3 {
-  font-size: 16px;
-  width: 130px;
-  margin-top: 5px;
-  margin-left: 5px;
-  margin-right: 0px;
-  padding-left: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-
-.linhainfform {
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-}
-
-.campovazio {
-  width: 1px;
-}
-
 .infoform {
   font-size: 16px;
   padding-left: 10px;
-}
-
-.campo5 {
-  font-family: serif;
-  font-size: 25px;
-}
-
-.botaoentrarsupesq {
-  margin-top: 10px;
-  height: 30px;
-  width: 90px;
-  font-size: 16px;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.botaoentrarsup {
-  margin-top: 10px;
-  height: 30px;
-  width: 90px;
-  font-size: 16px;
-  margin-left: 18px;
-  margin-right: 10px;
 }
 
 .botaoentraresq {
@@ -146,114 +82,8 @@ body{
   margin-right: 10px;
 }
 
-.botaoentrardir {
-  margin-top: 10px;
-  height: 30px;
-  width: 90px;
-  font-size: 16px;
-  margin-left: 5px;
-  margin-right: 10px;
-}
-
-.campoinfo1 {
-  width: 500px;
-  height: 25px;
-  font-size: 16px;
-  padding-left: 10px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  margin-top: 10px;
-  border-top: solid;
-  border-bottom: solid;
-  border-width: 1px;
-  border-color: gray;
-}
-
-.campoinfo2 {
-  width: 500px;
-  height: 25px;
-  font-size: 16px;
-  padding-left: 10px;
-  padding-top: 10px;
-}
-
 .campoinfo {
-  width: 500px;
-  height: 20px;
-  font-size: 16px;
-  padding-left: 10px;
-  padding-top: 5px;
-}
-
-.campoinfo5 {
-  width: 500px;
-  height: 20px;
-  font-size: 16px;
-  padding-left: 10px;
-  padding-top: 2px;
-  padding-bottom: 5px
-}
-
-.campoinfo6 {
-  width: 500px;
-  height: 20px;
-  padding-left: 10px;
-  padding-top: 2px;
-  font-size: 16px;
-  border-top: solid;
-  border-width: 1px;
-  border-color: gray;
-}
-
-.campoinfocom {
-  width: 500px;
-  height: 20px;
-  padding-left: 10px;
-  padding-top: 5px;
   font-size: 15px;
-  border-top: solid;
-  border-width: 1px;
-  border-color: gray;
-}
-
-.campobaixarreserva {
-  padding-left: 10px;
-  padding-top: 5px;
-  font-size: 15px;
-}
-
-.mesas {
-  padding-left: 5px;
-  padding-right: 10px;
-  padding-top: 10px;
-  align-self: center;
-}
-
-.dataMapaMesas {
-  padding-left: 65px;
-}
-
-.mesa {
-  height: 55px;
-  width: 200px;
-  align-content: center;
-  font-size: 14px;
-  background-color: white;
-  border-width: 2px;
-  border-color: black;
-  margin-left: 7px;
-  margin-right: 7px;
-}
-
-.mesainf {
-  height: 55px;
-  width: 200px;
-  align-content: center;
-  font-size: 14px;
-  background-color: white;
-  border-width: 2px;
-  border-color: black;
-  margin-left: 7px;
-  margin-right: 7px;
-  margin-bottom: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
