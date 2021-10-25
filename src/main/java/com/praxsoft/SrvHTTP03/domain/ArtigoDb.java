@@ -1,6 +1,14 @@
 package com.praxsoft.SrvHTTP03.domain;
 
-public class Artigo {
+import javax.persistence.*;
+
+@Entity
+public class ArtigoDb {
+
+    @javax.persistence.Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String titulo;
     private String autor;
@@ -17,6 +25,11 @@ public class Artigo {
     private String subTitulo08;
     private String subTitulo09;
     private String subTitulo10;
+
+    public Long getId() { return id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitulo() { return titulo; }
     public void setTitulo(String nome) {
@@ -68,4 +81,22 @@ public class Artigo {
     public String getSubTitulo10() { return subTitulo10; }
     public void setSubTitulo10(String subTitulo10) { this.subTitulo10 = subTitulo10; }
 
+    public void MostraCamposArtigo() {
+        System.out.println("Id = " + id);
+        System.out.println("Título: " + titulo);
+        System.out.println("Autor: " + autor);
+        System.out.println("Data da publicação: " + data);
+        System.out.println("Nome do arquivo: " + nomeArquivo);
+        System.out.println("Sub Título 1: " + subTitulo01);
+        System.out.println("Sub Título 2: " + subTitulo02);
+        System.out.println("Sub Título 3: " + subTitulo03);
+        System.out.println("Sub Título 4: " + subTitulo04);
+        System.out.println("Sub Título 5: " + subTitulo05);
+        System.out.println("Sub Título 6: " + subTitulo06);
+        System.out.println("Sub Título 7: " + subTitulo07);
+        System.out.println("Sub Título 8: " + subTitulo08);
+        System.out.println("Sub Título 9: " + subTitulo09);
+        System.out.println("Sub Título 10: " + subTitulo10);
+
+    }
 }

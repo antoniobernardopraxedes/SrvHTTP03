@@ -1,6 +1,7 @@
 package com.praxsoft.SrvHTTP03.resources;
 
 import com.praxsoft.SrvHTTP03.domain.Artigo;
+import com.praxsoft.SrvHTTP03.domain.ArtigoDb;
 import com.praxsoft.SrvHTTP03.domain.ClienteDb;
 import com.praxsoft.SrvHTTP03.services.Arquivo;
 import com.praxsoft.SrvHTTP03.services.ArtigoService;
@@ -10,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +27,14 @@ public class SiteResources {
     @GetMapping(value = "/isis")
     public ResponseEntity<?> InicioSite(@RequestHeader(value = "User-Agent") String userAgent) {
         String nomeArquivo = "indice.html";
+
+        String caminho = Arquivo.getDiretorioRecursos() + "/isis/";
+        return siteService.LeArquivoMontaResposta(caminho, nomeArquivo, userAgent);
+    }
+
+    @GetMapping(value = "/isis/cadastro")
+    public ResponseEntity<?> CadastroArtigo(@RequestHeader(value = "User-Agent") String userAgent) {
+        String nomeArquivo = "cadastroartigo.html";
 
         String caminho = Arquivo.getDiretorioRecursos() + "/isis/";
         return siteService.LeArquivoMontaResposta(caminho, nomeArquivo, userAgent);
@@ -58,9 +64,25 @@ public class SiteResources {
         return siteService.LeArquivoMontaResposta(caminho, nomeArquivo, userAgent);
     }
 
+    @PostMapping(value = "/isis/cadastro")
+    public ResponseEntity<?> CadastrarArtigo(@RequestBody Artigo artigo) {
+        System.out.println("Solicitação de cadastro de artigo");
+
+        ArtigoDb artigoDb = artigoService.cadastrarArtigo(artigo);
+        if (artigoDb == null) {
+            return ResponseEntity.notFound().build();
+        }
+        else {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .contentType(MediaType.valueOf("application/json"))
+                    .body(artigoDb);
+        }
+    }
+
     @GetMapping(value = "/isis/listar")
     public ResponseEntity<?> ListaArtigos() {
-        List<Artigo> listagemArtigos = artigoService.listar();
+        List<ArtigoDb> listagemArtigos = artigoService.listar();
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -79,7 +101,5 @@ public class SiteResources {
                 .contentType(MediaType.valueOf("application/json"))
                 .body(paragrafos);
     }
-
-
 
 }

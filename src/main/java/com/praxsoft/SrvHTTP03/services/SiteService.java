@@ -61,8 +61,6 @@ public class SiteService {
         else {
             String arquivoTxt = Arquivo.LeTexto(caminho, nomeArquivo);
 
-            System.out.println(arquivoTxt);
-
             if (arquivoTxt == null) {
                 return ResponseEntity
                         .status(HttpStatus.NOT_FOUND )

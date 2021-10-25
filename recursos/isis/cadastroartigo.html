@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+  <html lang="pt-br">
+    <head>
+      <meta charset="UTF-8">
+      <title>Cadastro de Artigos</title>
+      <link rel="stylesheet" type="text/css" href="cadastroartigo.css">
+      <script type="text/javascript" defer src="cadastroartigo.js"></script>
+    </head>
+    <body>
+      <table>
+        <tr>
+          <td>
+            <img src="simboloamoros.jpg" alt="Simbolo Amoros" width="20" height="20" class="imagemlogo">
+          </td>
+          <td>
+            <p class="textologo">Cadastro de Artigo</p>
+          </td>
+        </tr>
+      </table>
+
+      <table>
+        <form id="dadosartigo">
+          <tr>
+            <td class="textocolesq">Título do Artigo</td>
+            <td>
+              <label for="titulo"></label>
+              <input type="text" id="titulo" name="titulo" class = "campoform">
+              <small></small>
+            </td>
+            <td>
+              <button type="button" onclick="VerificaArtigo()" class="botaoentraresq">Verifica</button>
+            </td>
+          </tr>
+          <tr>
+            <td class="textocolesq">Nome do Autor</td>
+            <td>
+              <label for="autor"></label>
+              <input type="text" id="autor" name="autor" class = "campoform">
+              <small></small>
+              <td>
+                <button type="button" onclick="CadastraArtigo()" class="botaoentraresq">Cadastra</button>
+              </td>
+            </td>
+          </tr>
+          <tr>
+            <td class="textocolesq">Data da publicação</td>
+            <td>
+              <label for="data"></label>
+              <input type="text" id="data" name="data" class = "campoform">
+              <small></small>
+            </td>
+          </tr>
+          <tr>
+            <td class="textocolesq">Sub Título 1</td>
+            <td>
+              <label for="subtitulo01"></label>
+              <input type="text" id="subtitulo01" name="subtitulo01" class = "campoform">
+              <small></small>
+            </td>
+          </tr>
+          <tr>
+            <td class="textocolesq">Sub Título 2</td>
+            <td>
+              <label for="subtitulo02"></label>
+              <input type="text" id="subtitulo02" name="subtitulo02" class = "campoform">
+              <small></small>
+            </td>
+          </tr>
+          <tr>
+            <td class="textocolesq">Sub Título 3</td>
+            <td>
+              <label for="subtitulo03"></label>
+              <input type="text" id="subtitulo03" name="subtitulo03" class = "campoform">
+              <small></small>
+            </td>
+          </tr>
+          <tr>
+            <td class="textocolesq">Sub Título 4</td>
+            <td>
+              <label for="subtitulo04"></label>
+              <input type="text" id="subtitulo04" name="subtitulo04" class = "campoform">
+              <small></small>
+            </td>
+          </tr>
+          <tr>
+            <td class="textocolesq">Sub Título 5</td>
+            <td>
+              <label for="subtitulo05"></label>
+              <input type="text" id="subtitulo05" name="subtitulo05" class = "campoform">
+              <small></small>
+            </td>
+          </tr>
+          <tr>
+            <td class="textocolesq">Sub Título 6</td>
+            <td>
+              <label for="subtitulo06"></label>
+              <input type="text" id="subtitulo06" name="subtitulo06" class = "campoform">
+              <small></small>
+            </td>
+          </tr>
+          <tr>
+            <td class="textocolesq">Sub Título 7</td>
+            <td>
+              <label for="subtitulo07"></label>
+              <input type="text" id="subtitulo07" name="subtitulo07" class = "campoform">
+              <small></small>
+            </td>
+          </tr>
+          <tr>
+            <td class="textocolesq">Sub Título 8</td>
+            <td>
+              <label for="subtitulo08"></label>
+              <input type="text" id="subtitulo08" name="subtitulo08" class = "campoform">
+              <small></small>
+            </td>
+          </tr>
+          <tr>
+            <td class="textocolesq">Sub Título 9</td>
+            <td>
+              <label for="subtitulo09"></label>
+              <input type="text" id="subtitulo09" name="subtitulo09" class = "campoform">
+              <small></small>
+            </td>
+          </tr>
+          <tr>
+            <td class="textocolesq">Sub Título 10</td>
+            <td>
+              <label for="subtitulo10"></label>
+              <input type="text" id="subtitulo10" name="subtitulo10" class = "campoform">
+              <small></small>
+            </td>
+          </tr>
+        </form>
+      </table>
+
+      <section>
+        <h4 id="tituloartigo"></h4>
+        <p class="campoinfo" id="info"></p>
+        <div id="elementoPai">
+          <p id="elementoFilho"></p>
+        </div>
+      </section>
+
+    </body>
+
+</html>
