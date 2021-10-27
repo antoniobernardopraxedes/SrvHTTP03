@@ -3,8 +3,8 @@
     <head>
       <meta charset="UTF-8">
       <title>Cadastro de Artigos</title>
-      <link rel="stylesheet" type="text/css" href="cadastroartigo.css">
-      <script type="text/javascript" defer src="cadastroartigo.js"></script>
+      <link rel="stylesheet" type="text/css" href="pesquisaartigo.css">
+      <script type="text/javascript" defer src="pesquisaartigo.js"></script>
     </head>
     <body>
       <table>
@@ -13,7 +13,7 @@
             <img src="simboloamoros.jpg" alt="Simbolo Amoros" width="20" height="20" class="imagemlogo">
           </td>
           <td>
-            <p class="textologo">Cadastro de Artigo</p>
+            <p class="textologo">Pesquisa de Artigo</p>
           </td>
         </tr>
       </table>
@@ -132,13 +132,7 @@
           </tr>
         </form>
       </table>
-      <form>
-        <fieldset class="campoartigo">
-          <legend>Artigo</legend>
-          <p><textarea id="at1" class="noscrollbars" onkeyup="autoGrow(this);"></textarea></p>
-          <button type="button" onclick="CadastraArtigo()" class="botaoentraresq">Cadastra</button>
-        </fieldset>
-      </form>
+      <div id="div1"></div>
     </body>
 
 </html>

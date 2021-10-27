@@ -64,6 +64,14 @@ public class SiteResources {
         return siteService.LeArquivoMontaResposta(caminho, nomeArquivo, userAgent);
     }
 
+    @GetMapping(value = "/isis/pesquisa")
+    public ResponseEntity<?> PesquisaArtigo(@RequestHeader(value = "User-Agent") String userAgent) {
+        String nomeArquivo = "pesquisaartigo.html";
+
+        String caminho = Arquivo.getDiretorioRecursos() + "/isis/";
+        return siteService.LeArquivoMontaResposta(caminho, nomeArquivo, userAgent);
+    }
+
     @PostMapping(value = "/isis/cadastro")
     public ResponseEntity<?> CadastrarArtigo(@RequestBody Artigo artigo) {
         System.out.println("Solicitação de cadastro de artigo");
@@ -88,6 +96,37 @@ public class SiteResources {
                 .status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("application/json"))
                 .body(listagemArtigos);
+    }
+
+    @GetMapping(value = "/isis/buscaid/{id}")
+    public ResponseEntity<?> BuscaArtigoId(@PathVariable Long id) {
+        Artigo artigo = artigoService.buscarArtigoId(id);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("application/json"))
+                .body(artigo);
+    }
+
+    @GetMapping(value = "/isis/buscatitulo/{titulo}")
+    public ResponseEntity<?> BuscaArtigoTitulo(@PathVariable String titulo) {
+        List<ArtigoDb> ListaArtigos = artigoService.buscarTituloContem(titulo);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("application/json"))
+                .body(ListaArtigos);
+    }
+
+    @DeleteMapping(value = "/isis/apaga/{id}")
+    public ResponseEntity<?> ApagaArtigo(@PathVariable Long id) {
+
+        if (artigoService.apagarArtigo(id)) {
+            return ResponseEntity.ok().build();
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping(value = "/isis/ler/{nomeArquivo}")

@@ -1,11 +1,9 @@
 //*********************************************************************************************************************
+//                       Programa Javascript para pesquisa de artigos no banco de dados                               *
 //                                                                                                                    *
-//                       Programa Javascript para cadastro de artigos no banco de dados                               *
+// Data: 27/10/2021                                                                                                   *
 //                                                                                                                    *
-// Data: 25/10/2021                                                                                                   *
-//                                                                                                                    *
-// Função: permite cadastrar artigos no banco de dados do servidor                                                    *
-//                                                                                                                    *
+// Função: permite pesquisar por artigos no banco de dados do servidor                                                *
 //*********************************************************************************************************************
 //
 const form = document.getElementById('dadosartigo');
@@ -81,8 +79,7 @@ function CarregaVariaveisFormulario() {
     Artigo.subTitulo08 = SubTitulo08.value;
     Artigo.subTitulo09 = SubTitulo09.value;
     Artigo.subTitulo10 = SubTitulo10.value;
-    let areaDeTexto = document.getElementById("at1");
-    Artigo.conteudo = areaDeTexto.value;
+
 }
 
 //*********************************************************************************************************************
@@ -100,6 +97,7 @@ function CarregaVariaveisFormulario() {
 function VerificaArtigo() {
 
     CarregaVariaveisFormulario();
+    let nomeArquivo = "mariaeareformaintima.txt";
     document.getElementById("autor").value = "Pai Joaquim";
 
     let requisicao = new XMLHttpRequest();
@@ -112,24 +110,21 @@ function VerificaArtigo() {
         let statusHTTP = requisicao.status;
 
         if ((statusHTTP >= 200) && (statusHTTP <= 299)) {
+            CarregaDadosArtigo(requisicao);
 
-                let dadosJson = JSON.parse(requisicao.responseText);
-                let numParagrafos = dadosJson.length;
-                let conteudo = dadosJson[0];
+            let divNova = document.createElement("p");
+            let conteudoNovo = document.createTextNode("Mensagem 1");
+            divNova.append(conteudoNovo);
+            divNova.style.marginLeft = "20px";
+            divNova.style.fontSize = "14px";
+            let divAtual = document.getElementById("div1");
+            document.body.insertBefore(divNova, divAtual);
 
-                for (let i = 1; i < numParagrafos; i++) {
+            conteudoNovo = document.createTextNode("Mensagem 2");
+            divNova.appendChild(conteudoNovo);
+            document.body.insertBefore(divNova, divAtual);
 
-                    conteudo = conteudo + "\n" + "\n" + dadosJson[i];
-
-                  }
-
-                  let areaDeTexto = document.getElementById("at1");
-                  areaDeTexto.value = conteudo;
-                  autoGrow(areaDeTexto);
-
-                  EscreveTexto("Recebido arquivo do servidor");
-
-
+            EscreveTexto("Recebido arquivo do servidor");
       }
       else {
         EscreveTexto("Servidor: arquivo não encontrado");

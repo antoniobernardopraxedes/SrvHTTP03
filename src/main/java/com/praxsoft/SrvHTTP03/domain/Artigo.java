@@ -2,6 +2,7 @@ package com.praxsoft.SrvHTTP03.domain;
 
 public class Artigo {
 
+    private Long id;
     private String titulo;
     private String autor;
     private String data;
@@ -17,6 +18,11 @@ public class Artigo {
     private String subTitulo08;
     private String subTitulo09;
     private String subTitulo10;
+
+    private String conteudo;
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getTitulo() { return titulo; }
     public void setTitulo(String nome) {
@@ -68,4 +74,6 @@ public class Artigo {
     public String getSubTitulo10() { return subTitulo10; }
     public void setSubTitulo10(String subTitulo10) { this.subTitulo10 = subTitulo10; }
 
+    public String getConteudo() { return conteudo; }
+    public void setConteudo(String conteudo) { this.conteudo = conteudo; }
 }
