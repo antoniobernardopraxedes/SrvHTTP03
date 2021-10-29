@@ -32,6 +32,10 @@ public class ArtigoService {
         return artigosRepository.findByAutorIgnoreCase(autor);
     }
 
+    public List<ArtigoDb> buscarSubTitulo01Contem(String subTitulo01) {
+        return artigosRepository.findBySubTitulo01ContainingIgnoreCase(subTitulo01);
+    }
+
     public ArtigoDb salvarArtigo(ArtigoDb artigo) {
         artigo.setId(null);
         return artigosRepository.save(artigo);
@@ -54,33 +58,37 @@ public class ArtigoService {
 
     public Artigo buscarArtigoId(Long id) {
 
-        ArtigoDb artigoDb = artigosRepository.getById(id);
-        Artigo artigo = new Artigo();
+        try {
+            ArtigoDb artigoDb = artigosRepository.getById(id);
+            Artigo artigo = new Artigo();
 
-        artigo.setId(artigoDb.getId());
-        artigo.setTitulo(artigoDb.getTitulo());
-        artigo.setAutor(artigoDb.getAutor());
-        artigo.setData(artigoDb.getData());
-        artigo.setSubTitulo01(artigoDb.getSubTitulo01());
-        artigo.setSubTitulo02(artigoDb.getSubTitulo02());
-        artigo.setSubTitulo03(artigoDb.getSubTitulo03());
-        artigo.setSubTitulo04(artigoDb.getSubTitulo04());
-        artigo.setSubTitulo05(artigoDb.getSubTitulo05());
-        artigo.setSubTitulo06(artigoDb.getSubTitulo06());
-        artigo.setSubTitulo07(artigoDb.getSubTitulo07());
-        artigo.setSubTitulo08(artigoDb.getSubTitulo08());
-        artigo.setSubTitulo09(artigoDb.getSubTitulo09());
-        artigo.setSubTitulo10(artigoDb.getSubTitulo10());
+            artigo.setId(artigoDb.getId());
+            artigo.setTitulo(artigoDb.getTitulo());
+            artigo.setAutor(artigoDb.getAutor());
+            artigo.setData(artigoDb.getData());
+            artigo.setNomeArquivo(artigoDb.getNomeArquivo());
+            artigo.setSubTitulo01(artigoDb.getSubTitulo01());
+            artigo.setSubTitulo02(artigoDb.getSubTitulo02());
+            artigo.setSubTitulo03(artigoDb.getSubTitulo03());
+            artigo.setSubTitulo04(artigoDb.getSubTitulo04());
+            artigo.setSubTitulo05(artigoDb.getSubTitulo05());
+            artigo.setSubTitulo06(artigoDb.getSubTitulo06());
+            artigo.setSubTitulo07(artigoDb.getSubTitulo07());
+            artigo.setSubTitulo08(artigoDb.getSubTitulo08());
+            artigo.setSubTitulo09(artigoDb.getSubTitulo09());
+            artigo.setSubTitulo10(artigoDb.getSubTitulo10());
 
-        String caminho = Arquivo.getDiretorioBd() + "/artigos/";
-        String conteudo = Arquivo.LeTexto(caminho, artigoDb.getNomeArquivo());
-        if (conteudo == null) {
-            artigo.setConteudo("");
+            String caminho = Arquivo.getDiretorioBd() + "/artigos/";
+            String conteudo = Arquivo.LeTexto(caminho, artigoDb.getNomeArquivo());
+            if (conteudo == null) {
+                artigo.setConteudo("");
+            } else {
+                artigo.setConteudo(conteudo);
+            }
+            return artigo;
+        } catch (Exception e) {
+            return null;
         }
-        else {
-            artigo.setConteudo(conteudo);
-        }
-        return artigo;
     }
 
     public ArtigoDb cadastrarArtigo(Artigo artigo) {
@@ -118,12 +126,12 @@ public class ArtigoService {
 
     public ArtigoDb atualizarArtigo(Artigo artigo, Long id) {
 
-        ArtigoDb artigoDb = new ArtigoDb();
+        ArtigoDb artigoDb = artigosRepository.getById(id);
         artigoDb.setId(id);
         artigoDb.setTitulo(artigo.getTitulo());
         artigoDb.setAutor(artigo.getAutor());
         artigoDb.setData(artigo.getData());
-        artigoDb.setNomeArquivo(artigo.getNomeArquivo());
+
         artigoDb.setSubTitulo01(artigo.getSubTitulo01());
         artigoDb.setSubTitulo02(artigo.getSubTitulo02());
         artigoDb.setSubTitulo03(artigo.getSubTitulo03());
@@ -136,10 +144,10 @@ public class ArtigoService {
         artigoDb.setSubTitulo10(artigo.getSubTitulo10());
 
         String caminho = Arquivo.getDiretorioBd() + "/artigos/";
-        String nomeTemp = "a" + artigo.getNomeArquivo();
-        Arquivo.Renomeia(caminho, artigo.getNomeArquivo(), nomeTemp);
-        Arquivo.Apaga(caminho, artigo.getNomeArquivo());
-        Arquivo.EscreveTexto(caminho, artigo.getNomeArquivo(), artigo.getConteudo());
+        String nomeArquivo = artigoDb.getNomeArquivo();
+        Arquivo.Renomeia(caminho, nomeArquivo, "a" + nomeArquivo);
+        Arquivo.Apaga(caminho, nomeArquivo);
+        Arquivo.EscreveTexto(caminho, nomeArquivo, artigo.getConteudo());
 
         return artigosRepository.save(artigoDb);
     }

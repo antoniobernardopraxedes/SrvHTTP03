@@ -13,4 +13,6 @@ public interface ArtigosRepository extends JpaRepository<ArtigoDb, Long> {
 
     List<ArtigoDb> findByAutorIgnoreCase(String autor);
 
+    List<ArtigoDb> findBySubTitulo01ContainingIgnoreCase(String subTitulo01);
+
 }

@@ -88,8 +88,26 @@ public class SiteResources {
         }
     }
 
+    @PutMapping(value = "/isis/atualiza/{id}")
+    public ResponseEntity<?> AtualizarArtigo(@PathVariable Long id, @RequestBody Artigo artigo) {
+        System.out.println("Solicitação de atualização de artigo");
+
+        ArtigoDb artigoDb = artigoService.atualizarArtigo(artigo, id);
+        if (artigoDb == null) {
+            return ResponseEntity.notFound().build();
+        }
+        else {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .contentType(MediaType.valueOf("application/json"))
+                    .body(artigoDb);
+        }
+    }
+
     @GetMapping(value = "/isis/listar")
     public ResponseEntity<?> ListaArtigos() {
+        System.out.println("Solicitação de listagens de artigos");
+
         List<ArtigoDb> listagemArtigos = artigoService.listar();
 
         return ResponseEntity
@@ -100,17 +118,38 @@ public class SiteResources {
 
     @GetMapping(value = "/isis/buscaid/{id}")
     public ResponseEntity<?> BuscaArtigoId(@PathVariable Long id) {
+        System.out.println("Solicitação de busca de artigo por identificador");
+
         Artigo artigo = artigoService.buscarArtigoId(id);
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("application/json"))
-                .body(artigo);
+        if (artigo == null) {
+            return ResponseEntity.notFound().build();
+        }
+        else {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .contentType(MediaType.valueOf("application/json"))
+                    .body(artigo);
+        }
     }
 
     @GetMapping(value = "/isis/buscatitulo/{titulo}")
     public ResponseEntity<?> BuscaArtigoTitulo(@PathVariable String titulo) {
+        System.out.println("Solicitação de busca de artigo por título");
+
         List<ArtigoDb> ListaArtigos = artigoService.buscarTituloContem(titulo);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("application/json"))
+                .body(ListaArtigos);
+    }
+
+    @GetMapping(value = "/isis/buscasubtitulo/{subtitulo}")
+    public ResponseEntity<?> BuscaArtigoSubTitulo01(@PathVariable String subtitulo) {
+        System.out.println("Solicitação de busca de artigo por palavra chave");
+
+        List<ArtigoDb> ListaArtigos = artigoService.buscarSubTitulo01Contem(subtitulo);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -120,6 +159,7 @@ public class SiteResources {
 
     @DeleteMapping(value = "/isis/apaga/{id}")
     public ResponseEntity<?> ApagaArtigo(@PathVariable Long id) {
+        System.out.println("Solicitação de exclusão de artigo");
 
         if (artigoService.apagarArtigo(id)) {
             return ResponseEntity.ok().build();
@@ -131,6 +171,7 @@ public class SiteResources {
 
     @GetMapping(value = "/isis/ler/{nomeArquivo}")
     public ResponseEntity<?> EnviaParagrafos(@PathVariable String nomeArquivo) {
+        System.out.println("Solicitação de leitura de conteúdo de arquivo por parágrafos");
 
         String caminho = Arquivo.getDiretorioRecursos() + "/isis/textos/";
         List <String> paragrafos = Arquivo.LeParagrafos(caminho, nomeArquivo);
