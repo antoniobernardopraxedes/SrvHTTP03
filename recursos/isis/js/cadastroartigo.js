@@ -24,7 +24,8 @@ const SubTitulo08 = document.getElementById('subtitulo08');
 const SubTitulo09 = document.getElementById('subtitulo09');
 const SubTitulo10 = document.getElementById('subtitulo10');
 
-const Artigo = { titulo: "",
+const Artigo = { id: 0,
+                 titulo: "",
                  autor: "",
                  data: "",
                  subTitulo01: "",
@@ -100,10 +101,9 @@ function CarregaVariaveisFormulario() {
 function VerificaArtigo() {
 
     CarregaVariaveisFormulario();
-    document.getElementById("autor").value = "Pai Joaquim";
 
     let requisicao = new XMLHttpRequest();
-    let recurso = "/isis/buscatitulo/" + Artigo.titulo;
+    let recurso = "/isis/buscaid/" + Artigo.id;
     requisicao.open("GET", recurso, true);
     requisicao.timeout = 2000;
     requisicao.send(null);

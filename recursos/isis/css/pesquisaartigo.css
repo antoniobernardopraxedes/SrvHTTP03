@@ -4,7 +4,7 @@ body{
 }
 
 .textologo{
-  font-size: 20px;
+  font-size: 18px;
   padding-left: 10px;
 }
 
@@ -12,9 +12,13 @@ body{
   margin-left: 20px;
 }
 
-.tituloartigo{
-    padding-top: 20px;
-    font-size: 40px;
+.linhasuperior{
+  margin-top: 10px;
+}
+
+.campoinfo{
+  font-size: 14px;
+  padding-left: 20px;
 }
 
 .textocolesq {
@@ -36,13 +40,49 @@ body{
   padding-bottom: 1px;
 }
 
-.botaoentraresq {
+.botao1 {
   font-size: 12px;
   height: 20px;
   width: 80px;
-  margin-top: 10px;
+  margin-top: 5px;
   margin-left: 20px;
-  margin-right: 10px;
+  margin-right: 5px;
+}
+
+.botao2 {
+  font-size: 12px;
+  height: 20px;
+  width: 90px;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.botao3 {
+  font-size: 12px;
+  height: 20px;
+  width: 100px;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.botao4 {
+  font-size: 12px;
+  height: 20px;
+  width: 125px;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.botao5 {
+  font-size: 12px;
+  height: 20px;
+  width: 80px;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .areadetexto{
@@ -67,12 +107,6 @@ textarea.noscrollbars {
   padding-top: 5px;
   padding-left: 5px;
   padding-right: 5px;
-}
-
-.campoinfo{
-  font-size: 12px;
-  margin-top: 10px;
-  margin-left: 20px;
 }
 
 .textoartigo{

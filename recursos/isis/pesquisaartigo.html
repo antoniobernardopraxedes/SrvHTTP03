@@ -2,44 +2,52 @@
   <html lang="pt-br">
     <head>
       <meta charset="UTF-8">
-      <title>Cadastro de Artigos</title>
+      <title>Artigos</title>
       <link rel="stylesheet" type="text/css" href="pesquisaartigo.css">
       <script type="text/javascript" defer src="pesquisaartigo.js"></script>
     </head>
     <body>
       <table>
         <tr>
-          <td>
-            <img src="simboloamoros.jpg" alt="Simbolo Amoros" width="20" height="20" class="imagemlogo">
-          </td>
-          <td>
-            <p class="textologo">Pesquisa de Artigo</p>
-          </td>
+          <td><img src="simboloamoros.jpg" alt="Simbolo Amoros" width="20" height="20" class="imagemlogo"></td>
+          <td class="textologo">Artigos</td>
+          <td class="campoinfo" id="info"></td>
         </tr>
       </table>
-
       <table>
         <form id="dadosartigo">
-          <tr>
-            <td class="textocolesq">Título do Artigo</td>
-            <td>
-              <label for="titulo"></label>
-              <input type="text" id="titulo" name="titulo" class = "campoform">
-              <small></small>
-            </td>
-            <td>
-              <button type="button" onclick="VerificaArtigo()" class="botaoentraresq">Verifica</button>
-            </td>
-          </tr>
+        <tr>
+          <td><button onClick="window.location.reload();" class="botao1">Limpa</button></td>
+          <td><button type="button" onclick="PesquisaId()" class="botao2">Pesquisa Id</button></td>
+          <td><button type="button" onclick="PesquisaTitulo()" class="botao3">Pesquisa Titulo</button></td>
+          <td><button type="button" onclick="PesquisaSubTitulo()" class="botao4">Pesquisa Sub Titulo</button></td>
+          <td><button type="button" onclick="Cadastra()" class="botao5">Cadastra</button></td>
+          <td><button type="button" onclick="Atualiza()" class="botao5">Atualiza</button></td>
+        </tr>
+      </table>
+      <table class="linhasuperior">
+        <tr>
+          <td class="textocolesq">Identificador</td>
+          <td>
+            <label for="identificador"></label>
+            <input type="text" id="identificador" name="identificador" class = "campoform">
+            <small></small>
+          </td>
+        </tr>
+        <tr>
+          <td class="textocolesq">Título do Artigo</td>
+          <td>
+            <label for="titulo"></label>
+            <input type="text" id="titulo" name="titulo" class = "campoform">
+            <small></small>
+          </td>
+        </tr>
           <tr>
             <td class="textocolesq">Nome do Autor</td>
             <td>
               <label for="autor"></label>
               <input type="text" id="autor" name="autor" class = "campoform">
               <small></small>
-              <td>
-
-              </td>
             </td>
           </tr>
           <tr>
@@ -132,7 +140,12 @@
           </tr>
         </form>
       </table>
-      <div id="div1"></div>
+        <form>
+          <fieldset class="campoartigo">
+            <legend>Artigo</legend>
+            <p><textarea id="at1" class="noscrollbars" onkeyup="autoGrow(this);"></textarea></p>
+          </fieldset>
+      </form>
     </body>
 
 </html>
