@@ -12,41 +12,42 @@ const Id = document.getElementById('identificador');
 const Titulo = document.getElementById('titulo');
 const Autor = document.getElementById('autor');
 const Data = document.getElementById('data');
+const PalavrasChave = document.getElementById('palavraschave');
 const SubTitulo01 = document.getElementById('subtitulo01');
+const SubTitulo02 = document.getElementById('subtitulo02');
+const SubTitulo03 = document.getElementById('subtitulo03');
+const SubTitulo04 = document.getElementById('subtitulo04');
+const SubTitulo05 = document.getElementById('subtitulo05');
 
 const Artigo = { id: 0,
                  titulo: "",
                  autor: "",
-                 data: "",
-                 nomeArquivo: "",
+                 dataPublicacao: "",
+                 dataRegistro: "",
+                 palavrasChave: "",
                  subTitulo01: "",
                  subTitulo02: "",
                  subTitulo03: "",
                  subTitulo04: "",
                  subTitulo05: "",
-                 subTitulo06: "",
-                 subTitulo07: "",
-                 subTitulo08: "",
-                 subTitulo09: "",
-                 subTitulo10: "",
+                 nomeArquivo: "",
                  conteudo: ""  };
 
 const ArtigoRec = { id: 0,
                     titulo: "",
                     autor: "",
-                    data: "",
-                    nomeArquivo: "",
+                    dataPublicacao: "",
+                    dataRegistro: "",
+                    palavrasChave: "",
                     subTitulo01: "",
                     subTitulo02: "",
                     subTitulo03: "",
                     subTitulo04: "",
                     subTitulo05: "",
-                    subTitulo06: "",
-                    subTitulo07: "",
-                    subTitulo08: "",
-                    subTitulo09: "",
-                    subTitulo10: "",
+                    nomeArquivo: "",
                     conteudo: ""  };
+
+var ArrayArtigoRec = new Array();
 
 //*********************************************************************************************************************
 // Nome da função: CarregaVariaveisFormulario                                                                         *
@@ -62,8 +63,13 @@ function CarregaVariaveisFormulario() {
     Artigo.id = Id.value;
     Artigo.titulo = Titulo.value;
     Artigo.autor = Autor.value;
-    Artigo.data = Data.value;
+    Artigo.dataPublicacao = Data.value;
+    Artigo.palavrasChave = PalavrasChave.value;
     Artigo.subTitulo01 = SubTitulo01.value;
+    Artigo.subTitulo02 = SubTitulo02.value;
+    Artigo.subTitulo03 = SubTitulo03.value;
+    Artigo.subTitulo04 = SubTitulo04.value;
+    Artigo.subTitulo05 = SubTitulo05.value;
     let areaDeTexto = document.getElementById("at1");
     Artigo.conteudo = areaDeTexto.value;
 
@@ -170,7 +176,7 @@ function PesquisaSubTitulo() {
 
     CarregaVariaveisFormulario();
 
-    if (Artigo.titulo == "") {
+    if (Artigo.subTitulo01 == "") {
         EscreveTexto("Entre com pelo menos uma palavra chave")
     }
     else {
@@ -259,9 +265,16 @@ function CarregaDadosArtigo(dadosJson) {
     ArtigoRec.id = dadosJson.id;
     ArtigoRec.titulo = dadosJson.titulo;
     ArtigoRec.autor = dadosJson.autor;
-    ArtigoRec.data = dadosJson.data;
-    ArtigoRec.nomeArquivo = dadosJson.nomeArquivo;
+    ArtigoRec.dataPublicacao = dadosJson.dataPublicacao;
+    ArtigoRec.dataRegistro = dadosJson.dataRegistro;
+    ArtigoRec.palavrasChave = dadosJson.palavrasChave;
     ArtigoRec.subTitulo01 = dadosJson.subTitulo01;
+    ArtigoRec.subTitulo02 = dadosJson.subTitulo02;
+    ArtigoRec.subTitulo03 = dadosJson.subTitulo03;
+    ArtigoRec.subTitulo04 = dadosJson.subTitulo04;
+    ArtigoRec.subTitulo05 = dadosJson.subTitulo05;
+    ArtigoRec.subTitulo06 = dadosJson.subTitulo06;
+    ArtigoRec.nomeArquivo = dadosJson.nomeArquivo;
     ArtigoRec.conteudo = dadosJson.conteudo;
 
 }
@@ -281,9 +294,20 @@ function CarregaDadosArtigos(dadosJson, indice) {
     ArtigoRec.id = dadosJson[indice].id;
     ArtigoRec.titulo = dadosJson[indice].titulo;
     ArtigoRec.autor = dadosJson[indice].autor;
-    ArtigoRec.data = dadosJson[indice].data;
+    ArtigoRec.dataPublicacao = dadosJson[indice].dataPublicacao;
+    ArtigoRec.dataRegistro = dadosJson[indice].dataRegistro;
+    ArtigoRec.palavrasChave = dadosJson[indice].palavrasChave;
     ArtigoRec.subTitulo01 = dadosJson[indice].subTitulo01;
+    ArtigoRec.subTitulo02 = dadosJson[indice].subTitulo02;
+    ArtigoRec.subTitulo03 = dadosJson[indice].subTitulo03;
+    ArtigoRec.subTitulo04 = dadosJson[indice].subTitulo04;
+    ArtigoRec.subTitulo05 = dadosJson[indice].subTitulo05;
+    ArtigoRec.subTitulo06 = dadosJson[indice].subTitulo06;
+    ArtigoRec.nomeArquivo = dadosJson[indice].nomeArquivo;
     ArtigoRec.conteudo = "";
+
+    //ArrayArtigoRec.push(ArtigoRec);
+
 }
 
 //*********************************************************************************************************************
@@ -300,8 +324,14 @@ function MostraDadosArtigo(numResultados) {
     document.getElementById("identificador").value = ArtigoRec.id;
     document.getElementById("titulo").value = ArtigoRec.titulo;
     document.getElementById("autor").value = ArtigoRec.autor;
-    document.getElementById("data").value = ArtigoRec.data;
+    document.getElementById("data").value = ArtigoRec.dataPublicacao;
+    document.getElementById("dataultmod").innerHTML = ArtigoRec.dataRegistro;
+    document.getElementById("palavraschave").value = ArtigoRec.palavrasChave;
     document.getElementById("subtitulo01").value = ArtigoRec.subTitulo01;
+    document.getElementById("subtitulo02").value = ArtigoRec.subTitulo02;
+    document.getElementById("subtitulo03").value = ArtigoRec.subTitulo03;
+    document.getElementById("subtitulo04").value = ArtigoRec.subTitulo04;
+    document.getElementById("subtitulo05").value = ArtigoRec.subTitulo05;
 
     let areaDeTexto = document.getElementById("at1");
     areaDeTexto.value = ArtigoRec.conteudo;
@@ -331,7 +361,13 @@ function LimpaFormulario() {
     document.getElementById("titulo").value = "";
     document.getElementById("autor").value = "";
     document.getElementById("data").value = "";
+    document.getElementById("dataultmod").innerHTML = "";
+    document.getElementById("palavraschave").value = "";
     document.getElementById("subtitulo01").value = "";
+    document.getElementById("subtitulo02").value = "";
+    document.getElementById("subtitulo03").value = "";
+    document.getElementById("subtitulo04").value = "";
+    document.getElementById("subtitulo05").value = "";
 
     let areaDeTexto = document.getElementById("at1");
     areaDeTexto.value = "";
@@ -385,12 +421,6 @@ function autoGrow (oField) {
     if (oField.scrollHeight > oField.clientHeight) {
       oField.style.height = oField.scrollHeight + "px";
     }
-}
-
-function EnviaArtigo() {
-    let areaDeTexto = document.getElementById("at1");
-    console.log(areaDeTexto.value);
-
 }
 
 function EscreveTexto(texto) {

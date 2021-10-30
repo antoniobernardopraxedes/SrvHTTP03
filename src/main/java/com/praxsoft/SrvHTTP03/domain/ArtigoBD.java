@@ -1,8 +1,15 @@
 package com.praxsoft.SrvHTTP03.domain;
 
-public class Artigo {
+import javax.persistence.*;
 
+@Entity
+public class ArtigoBD {
+
+    @javax.persistence.Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String titulo;
     private String autor;
     private String dataPublicacao;
@@ -13,23 +20,16 @@ public class Artigo {
     private String subTitulo03;
     private String subTitulo04;
     private String subTitulo05;
-
     private String nomeArquivo;
-
-    private String conteudo;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
     public String getTitulo() { return titulo; }
-    public void setTitulo(String nome) {
-        this.titulo = nome;
-    }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
 
     public String getAutor() { return autor; }
-    public void setAutor(String autor) {
-        this.autor = autor;
-    }
+    public void setAutor(String autor) { this.autor = autor; }
 
     public String getDataPublicacao() { return dataPublicacao; }
     public void setDataPublicacao(String dataPublicacao) { this.dataPublicacao = dataPublicacao; }
@@ -39,9 +39,6 @@ public class Artigo {
 
     public String getPalavrasChave() { return palavrasChave; }
     public void setPalavrasChave(String palavrasChave) { this.palavrasChave = palavrasChave; }
-
-    public String getNomeArquivo() { return nomeArquivo; }
-    public void setNomeArquivo(String nomeArquivo) { this.nomeArquivo = nomeArquivo; }
 
     public String getSubTitulo01() { return subTitulo01; }
     public void setSubTitulo01(String subTitulo01) { this.subTitulo01 = subTitulo01; }
@@ -58,6 +55,6 @@ public class Artigo {
     public String getSubTitulo05() { return subTitulo05; }
     public void setSubTitulo05(String subTitulo05) { this.subTitulo05 = subTitulo05; }
 
-    public String getConteudo() { return conteudo; }
-    public void setConteudo(String conteudo) { this.conteudo = conteudo; }
+    public String getNomeArquivo() { return nomeArquivo; }
+    public void setNomeArquivo(String nomeArquivo) { this.nomeArquivo = nomeArquivo; }
 }

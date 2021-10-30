@@ -1,11 +1,9 @@
 package com.praxsoft.SrvHTTP03.resources;
 
 import com.praxsoft.SrvHTTP03.domain.Artigo;
-import com.praxsoft.SrvHTTP03.domain.ArtigoDb;
-import com.praxsoft.SrvHTTP03.domain.ClienteDb;
+import com.praxsoft.SrvHTTP03.domain.ArtigoBD;
 import com.praxsoft.SrvHTTP03.services.Arquivo;
 import com.praxsoft.SrvHTTP03.services.ArtigoService;
-import com.praxsoft.SrvHTTP03.services.ClienteService;
 import com.praxsoft.SrvHTTP03.services.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,14 +25,6 @@ public class SiteResources {
     @GetMapping(value = "/isis")
     public ResponseEntity<?> InicioSite(@RequestHeader(value = "User-Agent") String userAgent) {
         String nomeArquivo = "indice.html";
-
-        String caminho = Arquivo.getDiretorioRecursos() + "/isis/";
-        return siteService.LeArquivoMontaResposta(caminho, nomeArquivo, userAgent);
-    }
-
-    @GetMapping(value = "/isis/cadastro")
-    public ResponseEntity<?> CadastroArtigo(@RequestHeader(value = "User-Agent") String userAgent) {
-        String nomeArquivo = "cadastroartigo.html";
 
         String caminho = Arquivo.getDiretorioRecursos() + "/isis/";
         return siteService.LeArquivoMontaResposta(caminho, nomeArquivo, userAgent);
@@ -64,7 +54,7 @@ public class SiteResources {
         return siteService.LeArquivoMontaResposta(caminho, nomeArquivo, userAgent);
     }
 
-    @GetMapping(value = "/isis/pesquisa")
+    @GetMapping(value = "/isis/artigo")
     public ResponseEntity<?> PesquisaArtigo(@RequestHeader(value = "User-Agent") String userAgent) {
         String nomeArquivo = "pesquisaartigo.html";
 
@@ -76,15 +66,16 @@ public class SiteResources {
     public ResponseEntity<?> CadastrarArtigo(@RequestBody Artigo artigo) {
         System.out.println("Solicitação de cadastro de artigo");
 
-        ArtigoDb artigoDb = artigoService.cadastrarArtigo(artigo);
-        if (artigoDb == null) {
+        ArtigoBD artigoBD = artigoService.cadastrarArtigo(artigo);
+
+        if (artigoBD == null) {
             return ResponseEntity.notFound().build();
         }
         else {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .contentType(MediaType.valueOf("application/json"))
-                    .body(artigoDb);
+                    .body(artigoBD);
         }
     }
 
@@ -92,15 +83,16 @@ public class SiteResources {
     public ResponseEntity<?> AtualizarArtigo(@PathVariable Long id, @RequestBody Artigo artigo) {
         System.out.println("Solicitação de atualização de artigo");
 
-        ArtigoDb artigoDb = artigoService.atualizarArtigo(artigo, id);
-        if (artigoDb == null) {
+        ArtigoBD artigoBD = artigoService.atualizarArtigo(artigo, id);
+
+        if (artigoBD == null) {
             return ResponseEntity.notFound().build();
         }
         else {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .contentType(MediaType.valueOf("application/json"))
-                    .body(artigoDb);
+                    .body(artigoBD);
         }
     }
 
@@ -108,7 +100,7 @@ public class SiteResources {
     public ResponseEntity<?> ListaArtigos() {
         System.out.println("Solicitação de listagens de artigos");
 
-        List<ArtigoDb> listagemArtigos = artigoService.listar();
+        List<ArtigoBD> listagemArtigos = artigoService.listar();
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -137,24 +129,34 @@ public class SiteResources {
     public ResponseEntity<?> BuscaArtigoTitulo(@PathVariable String titulo) {
         System.out.println("Solicitação de busca de artigo por título");
 
-        List<ArtigoDb> ListaArtigos = artigoService.buscarTituloContem(titulo);
+        List<ArtigoBD> ListaArtigos = artigoService.buscarTituloContem(titulo);
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("application/json"))
-                .body(ListaArtigos);
+        if (ListaArtigos == null) {
+            return ResponseEntity.notFound().build();
+        }
+        else {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .contentType(MediaType.valueOf("application/json"))
+                    .body(ListaArtigos);
+        }
     }
 
     @GetMapping(value = "/isis/buscasubtitulo/{subtitulo}")
     public ResponseEntity<?> BuscaArtigoSubTitulo01(@PathVariable String subtitulo) {
         System.out.println("Solicitação de busca de artigo por palavra chave");
 
-        List<ArtigoDb> ListaArtigos = artigoService.buscarSubTitulo01Contem(subtitulo);
+        List<ArtigoBD> ListaArtigos = artigoService.buscarSubTitulo01Contem(subtitulo);
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("application/json"))
-                .body(ListaArtigos);
+        if (ListaArtigos == null) {
+            return ResponseEntity.notFound().build();
+        }
+        else {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .contentType(MediaType.valueOf("application/json"))
+                    .body(ListaArtigos);
+        }
     }
 
     @DeleteMapping(value = "/isis/apaga/{id}")

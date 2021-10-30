@@ -20,23 +20,24 @@
           <td><button onClick="window.location.reload();" class="botao1">Limpa</button></td>
           <td><button type="button" onclick="PesquisaId()" class="botao2">Pesquisa Id</button></td>
           <td><button type="button" onclick="PesquisaTitulo()" class="botao3">Pesquisa Titulo</button></td>
-          <td><button type="button" onclick="PesquisaSubTitulo()" class="botao4">Pesquisa Sub Titulo</button></td>
+          <td><button type="button" onclick="PesquisaSubTitulo()" class="botao4">Pesquisa Palavra Chave</button></td>
           <td><button type="button" onclick="CadastraArtigo()" class="botao5">Cadastra</button></td>
           <td><button type="button" onclick="AtualizaArtigo()" class="botao5">Atualiza</button></td>
         </tr>
       </table>
-      <table class="linhasuperior">
-        <tr>
-          <td class="textocolesq">Identificador</td>
+      <table class="primeiralinhaform">
+        <tr><td class="textocolesq">Identificador</td>
           <td>
             <label for="identificador"></label>
-            <input type="text" id="identificador" name="identificador" class = "campoform">
+            <input type="text" id="identificador" name="identificador" class="campoformsup">
             <small></small>
           </td>
+          <td class="textocolmeio">Data da última modificação:</td>
+          <td class="textocoldir" id="dataultmod"></td>
         </tr>
         <tr>
           <td class="textocolesq">Título do Artigo</td>
-          <td>
+          <td colspan="3">
             <label for="titulo"></label>
             <input type="text" id="titulo" name="titulo" class = "campoform">
             <small></small>
@@ -44,7 +45,7 @@
         </tr>
           <tr>
             <td class="textocolesq">Nome do Autor</td>
-            <td>
+            <td colspan="3">
               <label for="autor"></label>
               <input type="text" id="autor" name="autor" class = "campoform">
               <small></small>
@@ -52,7 +53,7 @@
           </tr>
           <tr>
             <td class="textocolesq">Data da Publicação</td>
-            <td>
+            <td colspan="3">
               <label for="data"></label>
               <input type="text" id="data" name="data" class = "campoform">
               <small></small>
@@ -60,9 +61,49 @@
           </tr>
           <tr>
             <td class="textocolesq">Palavras Chave</td>
-            <td>
+            <td colspan="3">
+              <label for="palavraschave"></label>
+              <input type="text" id="palavraschave" name="palavraschave" class = "campoform">
+              <small></small>
+            </td>
+          </tr>
+          <tr>
+            <td class="textocolesq">Sub Título 1</td>
+            <td colspan="3">
               <label for="subtitulo01"></label>
               <input type="text" id="subtitulo01" name="subtitulo01" class = "campoform">
+              <small></small>
+            </td>
+          </tr>
+          <tr>
+            <td class="textocolesq">Sub Título 2</td>
+            <td colspan="3">
+              <label for="subtitulo02"></label>
+              <input type="text" id="subtitulo02" name="subtitulo02" class = "campoform">
+              <small></small>
+            </td>
+          </tr>
+          <tr>
+            <td class="textocolesq">Sub Título 3</td>
+            <td colspan="3">
+              <label for="subtitulo03"></label>
+              <input type="text" id="subtitulo03" name="subtitulo03" class = "campoform">
+              <small></small>
+            </td>
+          </tr>
+          <tr>
+            <td class="textocolesq">Sub Título 4</td>
+            <td colspan="3">
+              <label for="subtitulo04"></label>
+              <input type="text" id="subtitulo04" name="subtitulo04" class = "campoform">
+              <small></small>
+            </td>
+          </tr>
+          <tr>
+            <td class="textocolesq">Sub Título 5</td>
+            <td colspan="3">
+              <label for="subtitulo05"></label>
+              <input type="text" id="subtitulo05" name="subtitulo05" class = "campoform">
               <small></small>
             </td>
           </tr>

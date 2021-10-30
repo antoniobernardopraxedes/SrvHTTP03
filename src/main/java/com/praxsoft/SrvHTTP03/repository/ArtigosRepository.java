@@ -1,18 +1,18 @@
 package com.praxsoft.SrvHTTP03.repository;
 
-import com.praxsoft.SrvHTTP03.domain.ArtigoDb;
+import com.praxsoft.SrvHTTP03.domain.ArtigoBD;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ArtigosRepository extends JpaRepository<ArtigoDb, Long> {
+public interface ArtigosRepository extends JpaRepository<ArtigoBD, Long> {
 
-    List<ArtigoDb> findByTituloIgnoreCase(String titulo);
+    List<ArtigoBD> findByTituloIgnoreCase(String titulo);
 
-    List<ArtigoDb> findByTituloContainingIgnoreCase(String titulo);
+    List<ArtigoBD> findByTituloContainingIgnoreCase(String titulo);
 
-    List<ArtigoDb> findByAutorIgnoreCase(String autor);
+    List<ArtigoBD> findByAutorIgnoreCase(String autor);
 
-    List<ArtigoDb> findBySubTitulo01ContainingIgnoreCase(String subTitulo01);
+    List<ArtigoBD> findBySubTitulo01ContainingIgnoreCase(String subTitulo01);
 
 }
