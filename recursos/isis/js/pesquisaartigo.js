@@ -102,10 +102,8 @@ function PesquisaId() {
             let statusHTTP = requisicao.status;
 
             if ((statusHTTP >= 200) && (statusHTTP <= 299)) {
-              let dadosJson = JSON.parse(requisicao.responseText);
-              let numResultados = dadosJson.length;
-              CarregaDadosArtigo(dadosJson);
-              MostraDadosArtigo(1);
+              CarregaDadosArtigo(requisicao);
+              MostraDadosArtigo();
             }
             else {
               EscreveTexto("Não foram encontrados resultados da pesquisa");
@@ -117,6 +115,64 @@ function PesquisaId() {
             console.log("Erro: " + e);
         };
     }
+}
+
+//*********************************************************************************************************************
+// Nome da função: CarregaDadosArtigo                                                                                 *
+//                                                                                                                    *
+// Função: faz o parsing do arquivo XML recebido do servidor, lê as informações de um artigo e carrega nas variáveis  *
+//                                                                                                                    *
+// Entrada: mensagem Json recebida do servidor e o índice do artigo na mensagem                                       *
+// Saída: não tem                                                                                                     *
+//*********************************************************************************************************************
+//
+function CarregaDadosArtigo(requisicao) {
+
+    let dadosJson = JSON.parse(requisicao.responseText);
+    ArtigoRec.id = dadosJson.id;
+    ArtigoRec.titulo = dadosJson.titulo;
+    ArtigoRec.autor = dadosJson.autor;
+    ArtigoRec.dataPublicacao = dadosJson.dataPublicacao;
+    ArtigoRec.dataRegistro = dadosJson.dataRegistro;
+    ArtigoRec.palavrasChave = dadosJson.palavrasChave;
+    ArtigoRec.subTitulo01 = dadosJson.subTitulo01;
+    ArtigoRec.subTitulo02 = dadosJson.subTitulo02;
+    ArtigoRec.subTitulo03 = dadosJson.subTitulo03;
+    ArtigoRec.subTitulo04 = dadosJson.subTitulo04;
+    ArtigoRec.subTitulo05 = dadosJson.subTitulo05;
+    ArtigoRec.subTitulo06 = dadosJson.subTitulo06;
+    ArtigoRec.nomeArquivo = dadosJson.nomeArquivo;
+    ArtigoRec.conteudo = dadosJson.conteudo;
+}
+
+//*********************************************************************************************************************
+// Nome da função: MostraDadosArtigo                                                                                  *
+//                                                                                                                    *
+// Função: faz o parsing do arquivo XML recebido do servidor, lê as informações do artigo e carrega nas variáveis     *
+//                                                                                                                    *
+// Entrada: mensagem Json recebida do servidor                                                                        *
+// Saída: não tem                                                                                                     *
+//*********************************************************************************************************************
+//
+function MostraDadosArtigo() {
+
+    document.getElementById("identificador").value = ArtigoRec.id;
+    document.getElementById("titulo").value = ArtigoRec.titulo;
+    document.getElementById("autor").value = ArtigoRec.autor;
+    document.getElementById("data").value = ArtigoRec.dataPublicacao;
+    document.getElementById("dataultmod").innerHTML = ArtigoRec.dataRegistro;
+    document.getElementById("palavraschave").value = ArtigoRec.palavrasChave;
+    document.getElementById("subtitulo01").value = ArtigoRec.subTitulo01;
+    document.getElementById("subtitulo02").value = ArtigoRec.subTitulo02;
+    document.getElementById("subtitulo03").value = ArtigoRec.subTitulo03;
+    document.getElementById("subtitulo04").value = ArtigoRec.subTitulo04;
+    document.getElementById("subtitulo05").value = ArtigoRec.subTitulo05;
+
+    let areaDeTexto = document.getElementById("at1");
+    areaDeTexto.value = ArtigoRec.conteudo;
+    autoGrow(areaDeTexto);
+
+    EscreveTexto("Recebido o resultado da pesquisa");
 }
 
 //*********************************************************************************************************************
@@ -146,10 +202,8 @@ function PesquisaTitulo() {
           let statusHTTP = requisicao.status;
 
             if ((statusHTTP >= 200) && (statusHTTP <= 299)) {
-                let dadosJson = JSON.parse(requisicao.responseText);
-                let numResultados = dadosJson.length;
-                CarregaDadosArtigos(dadosJson, 0);
-                MostraDadosArtigo(numResultados);
+                CarregaDadosArtigos(requisicao);
+                MostraDadosArtigos(0);
             }
             else {
                 EscreveTexto("Não foram encontrados resultados da pesquisa");
@@ -190,10 +244,8 @@ function PesquisaSubTitulo() {
             let statusHTTP = requisicao.status;
 
             if ((statusHTTP >= 200) && (statusHTTP <= 299)) {
-                let dadosJson = JSON.parse(requisicao.responseText);
-                let numResultados = dadosJson.length;
-                CarregaDadosArtigos(dadosJson, 0);
-                MostraDadosArtigo(numResultados);
+                CarregaDadosArtigos(requisicao);
+                MostraDadosArtigos(0);
             }
             else {
                 EscreveTexto("Não foram encontrados resultados da pesquisa");
@@ -205,6 +257,75 @@ function PesquisaSubTitulo() {
             console.log("Erro: " + e);
         };
    }
+}
+
+//*********************************************************************************************************************
+// Nome da função: CarregaDadosArtigos                                                                                *
+//                                                                                                                    *
+// Função: faz o parsing do arquivo XML recebido do servidor, lê as informações de uma lista de artigos e carrega     *
+//         nas variáveis de um artigo                                                                                 *
+//                                                                                                                    *
+// Entrada: mensagem Json recebida do servidor e o índice do artigo na mensagem                                       *
+// Saída: não tem                                                                                                     *
+//*********************************************************************************************************************
+//
+function CarregaDadosArtigos(requisicao) {
+
+    let dadosJson = JSON.parse(requisicao.responseText);
+    let numResultados = dadosJson.length;
+
+    for (let i = 0; i < numResultados; i++) {
+        ArtigoRec.id = dadosJson[i].id;
+        ArtigoRec.titulo = dadosJson[i].titulo;
+        ArtigoRec.autor = dadosJson[i].autor;
+        ArtigoRec.dataPublicacao = dadosJson[i].dataPublicacao;
+        ArtigoRec.dataRegistro = dadosJson[i].dataRegistro;
+        ArtigoRec.palavrasChave = dadosJson[i].palavrasChave;
+        ArtigoRec.subTitulo01 = dadosJson[i].subTitulo01;
+        ArtigoRec.subTitulo02 = dadosJson[i].subTitulo02;
+        ArtigoRec.subTitulo03 = dadosJson[i].subTitulo03;
+        ArtigoRec.subTitulo04 = dadosJson[i].subTitulo04;
+        ArtigoRec.subTitulo05 = dadosJson[i].subTitulo05;
+        ArtigoRec.subTitulo06 = dadosJson[i].subTitulo06;
+        ArtigoRec.nomeArquivo = dadosJson[i].nomeArquivo;
+        ArtigoRec.conteudo = "";
+        ArrayArtigoRec.push(ArtigoRec);
+    }
+    if (numResultados > 1) {
+        EscreveTexto("Recebidos " + numResultados + " resultados da pesquisa");
+    }
+    else {
+        EscreveTexto("Recebido o resultado da pesquisa");
+    }
+}
+
+//*********************************************************************************************************************
+// Nome da função: MostraDadosArtigos                                                                                 *
+//                                                                                                                    *
+// Função: faz o parsing do arquivo XML recebido do servidor, lê as informações dos artigos e carrega cada objeto     *
+//         artigo no array de artigos                                                                                 *
+//                                                                                                                    *
+// Entrada: índice do objeto artigo recebido na mensagem enviada pelo servidor                                        *
+// Saída: não tem                                                                                                     *
+//*********************************************************************************************************************
+//
+function MostraDadosArtigos(indice) {
+
+    document.getElementById("identificador").value = ArrayArtigoRec[indice].id;
+    document.getElementById("titulo").value = ArrayArtigoRec[indice].titulo;
+    document.getElementById("autor").value = ArrayArtigoRec[indice].autor;
+    document.getElementById("data").value = ArrayArtigoRec[indice].dataPublicacao;
+    document.getElementById("dataultmod").innerHTML = ArrayArtigoRec[indice].dataRegistro;
+    document.getElementById("palavraschave").value = ArrayArtigoRec[indice].palavrasChave;
+    document.getElementById("subtitulo01").value = ArrayArtigoRec[indice].subTitulo01;
+    document.getElementById("subtitulo02").value = ArrayArtigoRec[indice].subTitulo02;
+    document.getElementById("subtitulo03").value = ArrayArtigoRec[indice].subTitulo03;
+    document.getElementById("subtitulo04").value = ArrayArtigoRec[indice].subTitulo04;
+    document.getElementById("subtitulo05").value = ArrayArtigoRec[indice].subTitulo05;
+
+    let areaDeTexto = document.getElementById("at1");
+    areaDeTexto.value = ArtigoRec.conteudo;
+    autoGrow(areaDeTexto);
 }
 
 //*********************************************************************************************************************
@@ -234,8 +355,7 @@ function CadastraArtigo() {
             let statusHTTP = requisicao.status;
 
             if ((statusHTTP >= 200) && (statusHTTP <= 299)) {
-                let dadosJson = JSON.parse(requisicao.responseText);
-                CarregaDadosArtigo(dadosJson);
+                CarregaDadosArtigo(requisicao);
                 document.getElementById("identificador").value = ArtigoRec.id;
                 EscreveTexto("Servidor: o artigo foi cadastrado");
             }
@@ -249,101 +369,6 @@ function CadastraArtigo() {
             console.log("Erro: " + e);
         };
     }
-}
-
-//*********************************************************************************************************************
-// Nome da função: CarregaDadosArtigo                                                                                 *
-//                                                                                                                    *
-// Função: faz o parsing do arquivo XML recebido do servidor, lê as informações de um artigo e carrega nas variáveis  *
-//                                                                                                                    *
-// Entrada: mensagem Json recebida do servidor e o índice do artigo na mensagem                                       *
-// Saída: não tem                                                                                                     *
-//*********************************************************************************************************************
-//
-function CarregaDadosArtigo(dadosJson) {
-
-    ArtigoRec.id = dadosJson.id;
-    ArtigoRec.titulo = dadosJson.titulo;
-    ArtigoRec.autor = dadosJson.autor;
-    ArtigoRec.dataPublicacao = dadosJson.dataPublicacao;
-    ArtigoRec.dataRegistro = dadosJson.dataRegistro;
-    ArtigoRec.palavrasChave = dadosJson.palavrasChave;
-    ArtigoRec.subTitulo01 = dadosJson.subTitulo01;
-    ArtigoRec.subTitulo02 = dadosJson.subTitulo02;
-    ArtigoRec.subTitulo03 = dadosJson.subTitulo03;
-    ArtigoRec.subTitulo04 = dadosJson.subTitulo04;
-    ArtigoRec.subTitulo05 = dadosJson.subTitulo05;
-    ArtigoRec.subTitulo06 = dadosJson.subTitulo06;
-    ArtigoRec.nomeArquivo = dadosJson.nomeArquivo;
-    ArtigoRec.conteudo = dadosJson.conteudo;
-
-}
-
-//*********************************************************************************************************************
-// Nome da função: CarregaDadosArtigos                                                                                *
-//                                                                                                                    *
-// Função: faz o parsing do arquivo XML recebido do servidor, lê as informações de uma lista de artigos e carrega     *
-//         nas variáveis de um artigo                                                                                 *
-//                                                                                                                    *
-// Entrada: mensagem Json recebida do servidor e o índice do artigo na mensagem                                       *
-// Saída: não tem                                                                                                     *
-//*********************************************************************************************************************
-//
-function CarregaDadosArtigos(dadosJson, indice) {
-
-    ArtigoRec.id = dadosJson[indice].id;
-    ArtigoRec.titulo = dadosJson[indice].titulo;
-    ArtigoRec.autor = dadosJson[indice].autor;
-    ArtigoRec.dataPublicacao = dadosJson[indice].dataPublicacao;
-    ArtigoRec.dataRegistro = dadosJson[indice].dataRegistro;
-    ArtigoRec.palavrasChave = dadosJson[indice].palavrasChave;
-    ArtigoRec.subTitulo01 = dadosJson[indice].subTitulo01;
-    ArtigoRec.subTitulo02 = dadosJson[indice].subTitulo02;
-    ArtigoRec.subTitulo03 = dadosJson[indice].subTitulo03;
-    ArtigoRec.subTitulo04 = dadosJson[indice].subTitulo04;
-    ArtigoRec.subTitulo05 = dadosJson[indice].subTitulo05;
-    ArtigoRec.subTitulo06 = dadosJson[indice].subTitulo06;
-    ArtigoRec.nomeArquivo = dadosJson[indice].nomeArquivo;
-    ArtigoRec.conteudo = "";
-
-    //ArrayArtigoRec.push(ArtigoRec);
-
-}
-
-//*********************************************************************************************************************
-// Nome da função: MostraDadosArtigo                                                                                  *
-//                                                                                                                    *
-// Função: faz o parsing do arquivo XML recebido do servidor, lê as informações do artigo e carrega nas variáveis     *
-//                                                                                                                    *
-// Entrada: mensagem Json recebida do servidor                                                                        *
-// Saída: não tem                                                                                                     *
-//*********************************************************************************************************************
-//
-function MostraDadosArtigo(numResultados) {
-
-    document.getElementById("identificador").value = ArtigoRec.id;
-    document.getElementById("titulo").value = ArtigoRec.titulo;
-    document.getElementById("autor").value = ArtigoRec.autor;
-    document.getElementById("data").value = ArtigoRec.dataPublicacao;
-    document.getElementById("dataultmod").innerHTML = ArtigoRec.dataRegistro;
-    document.getElementById("palavraschave").value = ArtigoRec.palavrasChave;
-    document.getElementById("subtitulo01").value = ArtigoRec.subTitulo01;
-    document.getElementById("subtitulo02").value = ArtigoRec.subTitulo02;
-    document.getElementById("subtitulo03").value = ArtigoRec.subTitulo03;
-    document.getElementById("subtitulo04").value = ArtigoRec.subTitulo04;
-    document.getElementById("subtitulo05").value = ArtigoRec.subTitulo05;
-
-    let areaDeTexto = document.getElementById("at1");
-    areaDeTexto.value = ArtigoRec.conteudo;
-    autoGrow(areaDeTexto);
-
-    if (numResultados > 1) {
-        EscreveTexto("Recebidos " + numResultados + " resultados da pesquisa");
-    }
-    else {
-        EscreveTexto("Recebido o resultado da pesquisa");
-    }
-
 }
 
 //*********************************************************************************************************************

@@ -100,12 +100,17 @@ public class SiteResources {
     public ResponseEntity<?> ListaArtigos() {
         System.out.println("Solicitação de listagens de artigos");
 
-        List<ArtigoBD> listagemArtigos = artigoService.listar();
+        List<ArtigoBD> ListaArtigos = artigoService.listar();
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("application/json"))
-                .body(listagemArtigos);
+        if (ListaArtigos.size() == 0) {
+            return ResponseEntity.notFound().build();
+        }
+        else {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .contentType(MediaType.valueOf("application/json"))
+                    .body(ListaArtigos);
+        }
     }
 
     @GetMapping(value = "/isis/buscaid/{id}")
@@ -131,7 +136,7 @@ public class SiteResources {
 
         List<ArtigoBD> ListaArtigos = artigoService.buscarTituloContem(titulo);
 
-        if (ListaArtigos == null) {
+        if (ListaArtigos.size() == 0) {
             return ResponseEntity.notFound().build();
         }
         else {
@@ -148,7 +153,7 @@ public class SiteResources {
 
         List<ArtigoBD> ListaArtigos = artigoService.buscarSubTitulo01Contem(subtitulo);
 
-        if (ListaArtigos == null) {
+        if (ListaArtigos.size() == 0) {
             return ResponseEntity.notFound().build();
         }
         else {
