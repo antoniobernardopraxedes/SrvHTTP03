@@ -16,10 +16,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         Arquivo.LeConfiguracao();
         Arquivo.MostraDadosConfiguracao();
-        Arquivo.LeUsuarios();
         Arquivo.MostraUsuarios();
 
-        for (int i = 1; i <= Arquivo.getNumUsuarios(); i++) {
+        for (int i = 0; i <= Arquivo.getNumUsuarios() - 1; i++) {
             auth.inMemoryAuthentication()
                     .withUser(Arquivo.getNomeUsuario(i)).password("{noop}" + Arquivo.getSenhaUsuario(i)).roles("USER");
         }

@@ -18,10 +18,10 @@ public class Arquivo {
     private static String diretorioBd = "/home/bernardo/bd/";
     private static String diretorioRecursos = "recursos/";
 
-    private static int numMaxUsuarios = 5;
-    private static int numUsuarios = 3;
-    private static String[] nomeUsuario = {"usuario=1", "Ingrid", "Guto", "Bernardo", "usuario=2"};
-    private static String[] senhaUsuario = {"s3nh4=2", "moqueca", "270672", "cl030379", "s3nh4=1" };
+    private static int numMaxUsuarios = 4;
+    private static int numUsuarios = 4;
+    private static String[] nomeUsuario = {"usuario1", "usuario2", "usuario3", "usuario4"};
+    private static String[] senhaUsuario = {"senha1=1", "senha2=2", "senha3=3", "senha4=4"};
 
     public static boolean isOpLocal() { return opLocal; }
 
@@ -69,35 +69,6 @@ public class Arquivo {
             diretorioBd = LeParametro(arquivoConf, "DiretorioBD:");
             diretorioRecursos = LeParametro(arquivoConf, "DiretorioRecursos:");
             resultado = true;
-        }
-        return resultado;
-    }
-
-    //******************************************************************************************************************
-    // Nome do Método: LeUsuarios()                                                                                    *
-    //	                                                                                                               *
-    // Funcao: lê o arquivo de usuarios e carrega nos atributos                                                        *
-    //                                                                                                                 *
-    // Entrada: não tem                                                                                                *
-    //                                                                                                                 *
-    // Saida: não tem                                                                                                  *
-    //******************************************************************************************************************
-    //
-    public static boolean LeUsuarios() {
-        boolean resultado = false;
-        String caminho = "recursos/";
-        String nomeArquivo = "srvhttp02.usr";
-
-        String arquivoConf = Arquivo.LeTexto(caminho, nomeArquivo);
-
-        if (arquivoConf != null) {
-            numUsuarios = Integer.parseInt(LeParametro(arquivoConf, "NumUsuarios:"));
-            if ((numUsuarios > 0) && (numUsuarios < numMaxUsuarios)) {
-                for (int i = 1; i <= numUsuarios; i++) {
-                    nomeUsuario[i] = LeParametro(arquivoConf, "NomeUsuario" + i + ":");
-                }
-                resultado = true;
-            }
         }
         return resultado;
     }
@@ -385,6 +356,16 @@ public class Arquivo {
         return campo;
     }
 
+    //******************************************************************************************************************
+    // Nome do Método: MostraDadosConfiguracao                                                                         *
+    //                                                                                                                 *
+    // Funcao: imprime no terminal as informações de configuração                                                      *
+    //                                                                                                                 *
+    // Entrada: não tem                                                                                                *
+    //                                                                                                                 *
+    // Saida: não tem                                                                                                  *
+    //******************************************************************************************************************
+    //
     public static void MostraDadosConfiguracao() {
         if (verbose) {
             System.out.println("\nInformações do arquivo de configuração");
@@ -400,11 +381,21 @@ public class Arquivo {
         }
     }
 
+    //******************************************************************************************************************
+    // Nome do Método: MostraUsuarios                                                                                  *
+    //                                                                                                                 *
+    // Funcao: imprime no terminal os nomes e as senhas dos usuários cadastrados                                       *
+    //                                                                                                                 *
+    // Entrada: não tem                                                                                                *
+    //                                                                                                                 *
+    // Saida: não tem                                                                                                  *
+    //******************************************************************************************************************
+    //
     public static void MostraUsuarios() {
         if (verbose) {
             System.out.print("\nInformações dos usuários: ");
             System.out.println(numUsuarios + " usuários");
-            for (int i = 1; i <= numUsuarios; i++) {
+            for (int i = 0; i <= numUsuarios - 1; i++) {
                 System.out.println("Usuário " + i + ": " + nomeUsuario[i] + " - Senha: " + senhaUsuario[i]);
             }
             System.out.println("");

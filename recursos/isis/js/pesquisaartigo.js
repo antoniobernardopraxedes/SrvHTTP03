@@ -47,7 +47,21 @@ const ArtigoRec = { id: 0,
                     nomeArquivo: "",
                     conteudo: ""  };
 
-var ArrayArtigoRec = new Array();
+var NumResultados;
+var Indice;
+
+ArrayId = new Array(10);
+ArrayTitulo = new Array(10);
+ArrayAutor = new Array(10);
+ArrayDataPublicacao = new Array(10);
+ArrayDataRegistro = new Array(10);
+ArrayPalavrasChave = new Array(10);
+ArraySubTitulo01 = new Array(10);
+ArraySubTitulo02 = new Array(10);
+ArraySubTitulo03 = new Array(10);
+ArraySubTitulo04 = new Array(10);
+ArraySubTitulo05 = new Array(10);
+ArrayNomeArquivo = new Array(10);
 
 //*********************************************************************************************************************
 // Nome da função: CarregaVariaveisFormulario                                                                         *
@@ -143,6 +157,7 @@ function CarregaDadosArtigo(requisicao) {
     ArtigoRec.subTitulo06 = dadosJson.subTitulo06;
     ArtigoRec.nomeArquivo = dadosJson.nomeArquivo;
     ArtigoRec.conteudo = dadosJson.conteudo;
+    NumResultados = 1;
 }
 
 //*********************************************************************************************************************
@@ -203,7 +218,8 @@ function PesquisaTitulo() {
 
             if ((statusHTTP >= 200) && (statusHTTP <= 299)) {
                 CarregaDadosArtigos(requisicao);
-                MostraDadosArtigos(0);
+                console.log("Indice = " + Indice);
+                MostraDadosArtigos(Indice);
             }
             else {
                 EscreveTexto("Não foram encontrados resultados da pesquisa");
@@ -245,7 +261,7 @@ function PesquisaSubTitulo() {
 
             if ((statusHTTP >= 200) && (statusHTTP <= 299)) {
                 CarregaDadosArtigos(requisicao);
-                MostraDadosArtigos(0);
+                MostraDadosArtigos(Indice);
             }
             else {
                 EscreveTexto("Não foram encontrados resultados da pesquisa");
@@ -272,27 +288,26 @@ function PesquisaSubTitulo() {
 function CarregaDadosArtigos(requisicao) {
 
     let dadosJson = JSON.parse(requisicao.responseText);
-    let numResultados = dadosJson.length;
+    NumResultados = dadosJson.length;
 
-    for (let i = 0; i < numResultados; i++) {
-        ArtigoRec.id = dadosJson[i].id;
-        ArtigoRec.titulo = dadosJson[i].titulo;
-        ArtigoRec.autor = dadosJson[i].autor;
-        ArtigoRec.dataPublicacao = dadosJson[i].dataPublicacao;
-        ArtigoRec.dataRegistro = dadosJson[i].dataRegistro;
-        ArtigoRec.palavrasChave = dadosJson[i].palavrasChave;
-        ArtigoRec.subTitulo01 = dadosJson[i].subTitulo01;
-        ArtigoRec.subTitulo02 = dadosJson[i].subTitulo02;
-        ArtigoRec.subTitulo03 = dadosJson[i].subTitulo03;
-        ArtigoRec.subTitulo04 = dadosJson[i].subTitulo04;
-        ArtigoRec.subTitulo05 = dadosJson[i].subTitulo05;
-        ArtigoRec.subTitulo06 = dadosJson[i].subTitulo06;
-        ArtigoRec.nomeArquivo = dadosJson[i].nomeArquivo;
-        ArtigoRec.conteudo = "";
-        ArrayArtigoRec.push(ArtigoRec);
+    for (let i = 0; i < NumResultados; i++) {
+        ArrayId[i] = dadosJson[i].id;
+        ArrayTitulo[i] = dadosJson[i].titulo;
+        ArrayAutor[i] = dadosJson[i].autor;
+        ArrayDataPublicacao[i] = dadosJson[i].dataPublicacao;
+        ArrayDataRegistro[i] = dadosJson[i].dataRegistro;
+        ArrayPalavrasChave[i] = dadosJson[i].palavrasChave;
+        ArraySubTitulo01[i] = dadosJson[i].subTitulo01;
+        ArraySubTitulo02[i] = dadosJson[i].subTitulo02;
+        ArraySubTitulo03[i] = dadosJson[i].subTitulo03;
+        ArraySubTitulo04[i] = dadosJson[i].subTitulo04;
+        ArraySubTitulo05[i] = dadosJson[i].subTitulo05;
+        ArrayNomeArquivo[i] = dadosJson[i].nomeArquivo;
     }
-    if (numResultados > 1) {
-        EscreveTexto("Recebidos " + numResultados + " resultados da pesquisa");
+    Indice = 0;
+
+    if (NumResultados > 1) {
+        EscreveTexto("Recebidos " + NumResultados + " resultados. Selecionado resultado " + (Indice + 1));
     }
     else {
         EscreveTexto("Recebido o resultado da pesquisa");
@@ -311,21 +326,41 @@ function CarregaDadosArtigos(requisicao) {
 //
 function MostraDadosArtigos(indice) {
 
-    document.getElementById("identificador").value = ArrayArtigoRec[indice].id;
-    document.getElementById("titulo").value = ArrayArtigoRec[indice].titulo;
-    document.getElementById("autor").value = ArrayArtigoRec[indice].autor;
-    document.getElementById("data").value = ArrayArtigoRec[indice].dataPublicacao;
-    document.getElementById("dataultmod").innerHTML = ArrayArtigoRec[indice].dataRegistro;
-    document.getElementById("palavraschave").value = ArrayArtigoRec[indice].palavrasChave;
-    document.getElementById("subtitulo01").value = ArrayArtigoRec[indice].subTitulo01;
-    document.getElementById("subtitulo02").value = ArrayArtigoRec[indice].subTitulo02;
-    document.getElementById("subtitulo03").value = ArrayArtigoRec[indice].subTitulo03;
-    document.getElementById("subtitulo04").value = ArrayArtigoRec[indice].subTitulo04;
-    document.getElementById("subtitulo05").value = ArrayArtigoRec[indice].subTitulo05;
+    document.getElementById("identificador").value = ArrayId[indice];
+    document.getElementById("titulo").value = ArrayTitulo[indice];
+    document.getElementById("autor").value = ArrayAutor[indice];
+    document.getElementById("data").value = ArrayDataPublicacao[indice];
+    document.getElementById("dataultmod").innerHTML = ArrayDataRegistro[indice];
+    document.getElementById("palavraschave").value = ArrayPalavrasChave[indice];
+    document.getElementById("subtitulo01").value = ArraySubTitulo01[indice];
+    document.getElementById("subtitulo02").value = ArraySubTitulo02[indice];
+    document.getElementById("subtitulo03").value = ArraySubTitulo03[indice];
+    document.getElementById("subtitulo04").value = ArraySubTitulo04[indice];
+    document.getElementById("subtitulo05").value = ArraySubTitulo05[indice];
 
-    let areaDeTexto = document.getElementById("at1");
-    areaDeTexto.value = ArtigoRec.conteudo;
-    autoGrow(areaDeTexto);
+    //let areaDeTexto = document.getElementById("at1");
+    //areaDeTexto.value = ArtigoRec.conteudo;
+    //autoGrow(areaDeTexto);
+}
+
+function ProximoResultado() {
+
+    if (Indice < (NumResultados - 1)) {
+        Indice = Indice + 1;
+        MostraDadosArtigos(Indice);
+        EscreveTexto("Recebidos " + NumResultados + " resultados. Selecionado resultado " + (Indice + 1));
+    }
+
+}
+
+function ResultadoAnterior() {
+
+    if (Indice > 0) {
+        Indice = Indice - 1;
+        MostraDadosArtigos(Indice);
+        EscreveTexto("Recebidos " + NumResultados + " resultados. Selecionado resultado " + (Indice + 1));
+    }
+
 }
 
 //*********************************************************************************************************************
